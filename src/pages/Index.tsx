@@ -330,7 +330,23 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Footer */}
+      {/* About Section */}
+      <section className="container mx-auto px-4 py-16 md:py-24 bg-secondary/30">
+        <div className="max-w-3xl mx-auto text-center">
+          <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-6">
+            About AI Voicemail
+          </h2>
+          <div className="space-y-4 text-lg text-muted-foreground">
+            <p>
+              Built by Alex, a 24-year-old entrepreneur who saw small service businesses losing thousands to missed calls.
+            </p>
+            <p>
+              After talking to 1,000+ plumbers, HVAC contractors, and roofers, one thing was clear: you're too busy working to answer every call. That's where AI Voicemail comes in.
+            </p>
+          </div>
+        </div>
+      </section>
+
       <footer className="border-t bg-secondary/30">
         <div className="container mx-auto px-4 py-8">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
