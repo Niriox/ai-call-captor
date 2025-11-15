@@ -64,8 +64,8 @@ serve(async (req) => {
       }
     );
   } catch (error) {
-    const errorMessage = error instanceof Error ? error.message : String(error);
-    return new Response(JSON.stringify({ error: errorMessage }), {
+    console.error("Error in cancel-subscription:", error);
+    return new Response(JSON.stringify({ error: "Unable to cancel subscription" }), {
       headers: { ...corsHeaders, "Content-Type": "application/json" },
       status: 500,
     });

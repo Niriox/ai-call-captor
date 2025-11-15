@@ -71,8 +71,8 @@ serve(async (req) => {
       }
     );
   } catch (error) {
-    const errorMessage = error instanceof Error ? error.message : String(error);
-    return new Response(JSON.stringify({ error: errorMessage }), {
+    console.error("Error in update-subscription-plan:", error);
+    return new Response(JSON.stringify({ error: "Unable to update subscription plan" }), {
       headers: { ...corsHeaders, "Content-Type": "application/json" },
       status: 500,
     });
