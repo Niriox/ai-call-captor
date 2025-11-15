@@ -14,7 +14,9 @@ import { z } from "zod";
 const step1Schema = z.object({
   businessName: z.string().trim().min(1, { message: "Business name is required" }).max(100),
   ownerName: z.string().trim().min(1, { message: "Your name is required" }).max(100),
-  businessPhone: z.string().trim().min(10, { message: "Valid phone number is required" }).max(20),
+  businessPhone: z.string()
+    .transform(val => val.replace(/\D/g, ''))
+    .pipe(z.string().regex(/^[1-9]\d{9,14}$/, "Phone must be 10-15 digits")),
 });
 
 const step2Schema = z.object({
@@ -24,7 +26,9 @@ const step2Schema = z.object({
 });
 
 const step3Schema = z.object({
-  notificationPhone: z.string().trim().min(10, { message: "Valid phone number is required" }).max(20),
+  notificationPhone: z.string()
+    .transform(val => val.replace(/\D/g, ''))
+    .pipe(z.string().regex(/^[1-9]\d{9,14}$/, "Phone must be 10-15 digits")),
   notificationEmail: z.string().trim().email({ message: "Valid email is required" }),
 });
 
@@ -171,17 +175,23 @@ const Onboarding = () => {
     setIsLoading(true);
 
     try {
+      // Convert phone numbers to E.164 format for database
+      const cleanBusinessPhone = businessPhone.replace(/\D/g, '');
+      const cleanNotificationPhone = notificationPhone.replace(/\D/g, '');
+      const e164BusinessPhone = cleanBusinessPhone.startsWith('1') ? `+${cleanBusinessPhone}` : `+1${cleanBusinessPhone}`;
+      const e164NotificationPhone = cleanNotificationPhone.startsWith('1') ? `+${cleanNotificationPhone}` : `+1${cleanNotificationPhone}`;
+      
       const { error } = await supabase
         .from("businesses")
         .insert({
           user_id: userId,
           business_name: businessName,
           owner_name: ownerName,
-          business_phone: businessPhone,
+          business_phone: e164BusinessPhone,
           industry,
           service_area: serviceArea,
           services_offered: servicesOffered,
-          notification_phone: notificationPhone,
+          notification_phone: e164NotificationPhone,
           notification_email: notificationEmail,
           selected_plan: selectedPlan,
         });
