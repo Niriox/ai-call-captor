@@ -32,7 +32,9 @@ const enterpriseSchema = z.object({
     },
     "Please use a business email address"
   ),
-  phone: z.string().min(10, "Phone number is required"),
+  phone: z.string()
+    .transform(val => val.replace(/\D/g, ''))
+    .pipe(z.string().regex(/^[1-9]\d{9,14}$/, "Phone must be 10-15 digits")),
   companyName: z.string().min(1, "Company name is required"),
   numLocations: z.string().min(1, "Please select number of locations"),
   estimatedCalls: z.string().min(1, "Please select estimated calls"),
@@ -92,6 +94,10 @@ const Enterprise = () => {
     setLoading(true);
 
     try {
+      // Strip formatting and convert to E.164 format for database
+      const cleanPhone = formData.phone.replace(/\D/g, '');
+      const e164Phone = cleanPhone.startsWith('1') ? `+${cleanPhone}` : `+1${cleanPhone}`;
+      
       // Insert into database
       const { error: dbError } = await supabase
         .from("enterprise_inquiries")
@@ -99,7 +105,7 @@ const Enterprise = () => {
           first_name: formData.firstName,
           last_name: formData.lastName,
           email: formData.email,
-          phone: formData.phone,
+          phone: e164Phone,
           company_name: formData.companyName,
           num_locations: formData.numLocations,
           estimated_calls: formData.estimatedCalls,

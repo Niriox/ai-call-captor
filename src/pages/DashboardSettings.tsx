@@ -39,7 +39,9 @@ const serviceOptions = [
 const businessInfoSchema = z.object({
   businessName: z.string().trim().min(1).max(100),
   ownerName: z.string().trim().min(1).max(100),
-  businessPhone: z.string().trim().min(10).max(20),
+  businessPhone: z.string()
+    .transform(val => val.replace(/\D/g, ''))
+    .pipe(z.string().regex(/^[1-9]\d{9,14}$/, "Phone must be 10-15 digits")),
   industry: z.string().min(1),
   serviceArea: z.string().trim().min(1).max(100),
   servicesOffered: z.array(z.string()).min(1),
@@ -159,12 +161,16 @@ const DashboardSettings = () => {
     setIsSaving(true);
 
     try {
+      // Convert phone to E.164 format for database
+      const cleanBusinessPhone = businessPhone.replace(/\D/g, '');
+      const e164BusinessPhone = cleanBusinessPhone.startsWith('1') ? `+${cleanBusinessPhone}` : `+1${cleanBusinessPhone}`;
+      
       const { error } = await supabase
         .from("businesses")
         .update({
           business_name: businessName,
           owner_name: ownerName,
-          business_phone: businessPhone,
+          business_phone: e164BusinessPhone,
           industry,
           service_area: serviceArea,
           services_offered: servicesOffered,
@@ -193,10 +199,14 @@ const DashboardSettings = () => {
     setIsSaving(true);
 
     try {
+      // Convert notification phone to E.164 format for database
+      const cleanSmsPhone = smsPhone.replace(/\D/g, '');
+      const e164SmsPhone = cleanSmsPhone.startsWith('1') ? `+${cleanSmsPhone}` : `+1${cleanSmsPhone}`;
+      
       const { error } = await supabase
         .from("businesses")
         .update({
-          notification_phone: smsPhone,
+          notification_phone: e164SmsPhone,
           notification_email: notificationEmail,
         })
         .eq("user_id", userId);
