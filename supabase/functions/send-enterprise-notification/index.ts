@@ -91,7 +91,7 @@ serve(async (req) => {
   } catch (error: any) {
     console.error("Error in send-enterprise-notification:", error);
     return new Response(
-      JSON.stringify({ error: error.message }),
+      JSON.stringify({ error: "Unable to process enterprise inquiry" }),
       {
         headers: { ...corsHeaders, "Content-Type": "application/json" },
         status: 500,

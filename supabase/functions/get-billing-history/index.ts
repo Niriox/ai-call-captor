@@ -55,8 +55,8 @@ serve(async (req) => {
       headers: { ...corsHeaders, "Content-Type": "application/json" },
     });
   } catch (error) {
-    const errorMessage = error instanceof Error ? error.message : String(error);
-    return new Response(JSON.stringify({ error: errorMessage }), {
+    console.error("Error in get-billing-history:", error);
+    return new Response(JSON.stringify({ error: "Unable to retrieve billing history" }), {
       headers: { ...corsHeaders, "Content-Type": "application/json" },
       status: 500,
     });
