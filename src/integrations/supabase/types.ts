@@ -137,6 +137,54 @@ export type Database = {
         }
         Relationships: []
       }
+      enterprise_inquiries: {
+        Row: {
+          company_name: string
+          created_at: string
+          current_solution: string | null
+          email: string
+          estimated_calls: string
+          first_name: string
+          id: string
+          last_name: string
+          message: string | null
+          num_locations: string
+          phone: string
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          company_name: string
+          created_at?: string
+          current_solution?: string | null
+          email: string
+          estimated_calls: string
+          first_name: string
+          id?: string
+          last_name: string
+          message?: string | null
+          num_locations: string
+          phone: string
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          company_name?: string
+          created_at?: string
+          current_solution?: string | null
+          email?: string
+          estimated_calls?: string
+          first_name?: string
+          id?: string
+          last_name?: string
+          message?: string | null
+          num_locations?: string
+          phone?: string
+          status?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
