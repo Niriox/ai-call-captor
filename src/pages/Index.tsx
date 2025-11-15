@@ -13,15 +13,15 @@ const Index = () => {
   const pricingPlans = [
     {
       name: "Starter",
-      badge: "Best for small teams",
+      badge: "Solo operators",
       price: "$35",
       period: "month",
-      calls: "~15-20 calls included",
+      calls: "~15-20 calls captured/mo",
       features: [
-        "AI phone answering",
-        "SMS notifications",
-        "Email summaries",
-        "Basic support",
+        "Capture every after-hours lead",
+        "Instant SMS lead summaries",
+        "Never miss emergency calls",
+        "Professional AI greeting",
       ],
       additional: "$1.50/min after included minutes",
       cta: "Start Free Trial",
@@ -29,15 +29,15 @@ const Index = () => {
     },
     {
       name: "Professional",
-      badge: "Most Popular",
+      badge: "Most Popular - Grow faster",
       price: "$100",
       period: "month",
-      calls: "~50-60 calls included",
+      calls: "~50-60 calls captured/mo",
       features: [
         "Everything in Starter",
-        "Calendar integration",
-        "Custom AI greeting",
-        "Priority support",
+        "Auto-book appointments 24/7",
+        "Custom AI for your business",
+        "Convert leads while on jobs",
       ],
       additional: "$1.00/min after included minutes",
       cta: "Start Free Trial",
@@ -48,12 +48,12 @@ const Index = () => {
       badge: null,
       price: "$300",
       period: "month",
-      calls: "~200-250 calls included",
+      calls: "~200-250 calls captured/mo",
       features: [
         "Everything in Professional",
-        "Multiple phone numbers",
-        "Advanced analytics",
-        "Custom integrations",
+        "Multiple locations/numbers",
+        "Track ROI with analytics",
+        "Integrate with your tools",
       ],
       additional: "$0.75/min after included minutes",
       cta: "Start Free Trial",
@@ -64,13 +64,13 @@ const Index = () => {
       badge: null,
       price: "Custom",
       period: null,
-      calls: "Unlimited calls",
+      calls: "Unlimited revenue capture",
       features: [
         "Everything in Business",
-        "Dedicated account manager",
-        "Custom AI training",
-        "SLA guarantee",
-        "White-label options",
+        "Dedicated success manager",
+        "Train AI on your process",
+        "99.9% uptime guarantee",
+        "Your branding, your rules",
       ],
       additional: null,
       cta: "Contact Sales",
@@ -80,24 +80,24 @@ const Index = () => {
 
   const faqs = [
     {
-      question: "How does it work?",
-      answer: "When a call comes in, your phone rings first. If you don't pick up within 5 seconds, our AI automatically answers, collects customer information, and texts you the details.",
+      question: "How quickly will I see results?",
+      answer: "Most contractors book their first AI-captured job within 24-48 hours. The AI works 24/7, so you start capturing after-hours and weekend calls immediately—calls that used to go straight to voicemail.",
     },
     {
-      question: "Will customers know it's AI?",
-      answer: "The AI sounds completely natural. Most customers don't realize they're talking to AI.",
+      question: "Will this actually sound professional to my customers?",
+      answer: "Absolutely. The AI sounds natural and professional. Most customers don't even realize they're talking to AI. They just appreciate getting a real response instead of voicemail.",
     },
     {
-      question: "What information does the AI collect?",
-      answer: "Customer name, phone number, service needed, address, and preferred appointment time.",
+      question: "What if I'm already using a call service?",
+      answer: "Unlike traditional answering services, our AI doesn't just take messages—it actively collects job details, preferred times, and urgency level. You get qualified leads, not just names and numbers. Plus it works instantly when you can't answer, no delays.",
     },
     {
-      question: "Can I try it free?",
-      answer: "Yes! 14-day free trial on any plan, no credit card required to start.",
+      question: "How much revenue am I losing to missed calls right now?",
+      answer: "Industry data shows contractors miss 30-40% of calls. If your average job is $500 and you get 10 calls/week, that's potentially $6,000-$8,000/month in lost revenue. Our service costs a fraction of one lost job.",
     },
     {
-      question: "Can I upgrade or downgrade my plan?",
-      answer: "Yes, you can change plans anytime from your dashboard.",
+      question: "Can I try it risk-free?",
+      answer: "Yes! 14-day free trial on any plan, no credit card required. If you don't capture at least one qualified lead, you shouldn't pay. That's how confident we are.",
     },
   ];
 
@@ -176,19 +176,24 @@ const Index = () => {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           <div className="space-y-6 animate-fade-up">
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-foreground leading-tight">
-              Stop Losing Customers to Voicemail
+              Capture Every Lead, Even When You're Busy
             </h1>
             <p className="text-lg md:text-xl text-muted-foreground">
-              AI Voicemail answers when you can't. Books appointments automatically. Sounds completely human.
+              Stop losing $1,000s in missed calls. Our AI converts after-hours calls into booked appointments while you sleep. Built for plumbers, HVAC contractors, and roofers who refuse to leave money on the table.
             </p>
-            <Button size="lg" className="text-lg px-8 shadow-elegant hover:shadow-xl transition-all">
-              <a href="/signup">Start Free 14-Day Trial</a>
-            </Button>
+            <div className="flex flex-col sm:flex-row gap-4">
+              <Button size="lg" className="text-lg px-8 shadow-elegant hover:shadow-xl transition-all">
+                <a href="/signup">Start Free Trial</a>
+              </Button>
+              <p className="text-sm text-muted-foreground self-center">
+                14-day trial • No credit card • Book your first job in 24 hours
+              </p>
+            </div>
           </div>
           <div className="relative">
             <img 
               src={heroImage} 
-              alt="Professional contractor using AI Voicemail service" 
+              alt="AI Voicemail Dashboard showing captured leads and booked appointments" 
               className="rounded-2xl shadow-elegant w-full h-auto"
             />
           </div>
@@ -197,19 +202,22 @@ const Index = () => {
 
       {/* How It Works Section */}
       <section className="container mx-auto px-4 py-16 md:py-24">
-        <h2 className="text-3xl md:text-4xl font-bold text-center mb-12 text-foreground">
-          How It Works
+        <h2 className="text-3xl md:text-4xl font-bold text-center mb-4 text-foreground">
+          Turn Every Call Into Revenue
         </h2>
+        <p className="text-xl text-muted-foreground text-center mb-12 max-w-2xl mx-auto">
+          Stop competing on who answers fastest. Win on who captures every opportunity.
+        </p>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           <Card className="text-center border-2 transition-all hover:shadow-elegant">
             <CardHeader>
               <div className="mx-auto w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mb-4">
                 <Phone className="w-8 h-8 text-primary" />
               </div>
-              <CardTitle className="text-xl">Customer Calls</CardTitle>
+              <CardTitle className="text-xl">Never Lose a Lead</CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-muted-foreground">Your business phone rings like normal</p>
+              <p className="text-muted-foreground">Whether you're on a job, driving, or with family—every caller gets a professional response instantly</p>
             </CardContent>
           </Card>
 
@@ -218,10 +226,10 @@ const Index = () => {
               <div className="mx-auto w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mb-4">
                 <Bot className="w-8 h-8 text-primary" />
               </div>
-              <CardTitle className="text-xl">AI Picks Up in 5 Seconds</CardTitle>
+              <CardTitle className="text-xl">Book While You Sleep</CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-muted-foreground">If you don't answer, AI automatically takes the call</p>
+              <p className="text-muted-foreground">AI collects all job details and preferred times. Wake up to a full schedule, not voicemails</p>
             </CardContent>
           </Card>
 
@@ -230,10 +238,10 @@ const Index = () => {
               <div className="mx-auto w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mb-4">
                 <MessageSquare className="w-8 h-8 text-primary" />
               </div>
-              <CardTitle className="text-xl">Get Customer Details</CardTitle>
+              <CardTitle className="text-xl">Focus on Real Work</CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-muted-foreground">Receive SMS with name, phone, service needed, and address</p>
+              <p className="text-muted-foreground">Stop playing phone tag. Get organized lead details via text, ready to convert into paying jobs</p>
             </CardContent>
           </Card>
         </div>
@@ -241,9 +249,12 @@ const Index = () => {
 
       {/* Pricing Section */}
       <section id="pricing" className="container mx-auto px-4 py-16 md:py-24 bg-secondary/30">
-        <h2 className="text-3xl md:text-4xl font-bold text-center mb-12 text-foreground">
-          Simple, Transparent Pricing
+        <h2 className="text-3xl md:text-4xl font-bold text-center mb-4 text-foreground">
+          Pay For Results, Not Missed Opportunities
         </h2>
+        <p className="text-xl text-muted-foreground text-center mb-12 max-w-2xl mx-auto">
+          One missed call costs more than a month of service. Start capturing revenue in 24 hours.
+        </p>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {pricingPlans.map((plan) => (
             <Card 
