@@ -2,10 +2,14 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Badge } from "@/components/ui/badge";
-import { Phone, Bot, MessageSquare, Check } from "lucide-react";
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { Phone, Bot, MessageSquare, Check, Menu } from "lucide-react";
 import heroImage from "@/assets/hero-image.jpg";
+import { useState } from "react";
 
 const Index = () => {
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
   const pricingPlans = [
     {
       name: "Starter",
@@ -99,20 +103,70 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-gradient-hero">
-      {/* Header/Logo */}
-      <header className="container mx-auto px-4 py-6">
-        <div className="flex items-center justify-between">
-          <a href="/" className="flex items-center gap-2 text-2xl font-bold text-primary">
-            <Phone className="w-8 h-8" />
-            <span>AI Voicemail</span>
-          </a>
-          <div className="flex gap-4">
-            <a href="/signin" className="text-muted-foreground hover:text-primary transition-colors">
-              Sign In
+      {/* Header */}
+      <header className="sticky top-0 z-50 bg-card/95 backdrop-blur-sm border-b shadow-sm">
+        <div className="container mx-auto px-4">
+          <div className="flex items-center justify-between h-16">
+            {/* Logo */}
+            <a href="/" className="flex items-center gap-2 font-bold text-xl md:text-2xl text-primary hover:opacity-80 transition-opacity">
+              <div className="w-8 h-8 md:w-10 md:h-10 bg-primary rounded-lg flex items-center justify-center">
+                <Phone className="w-5 h-5 md:w-6 md:h-6 text-primary-foreground" />
+              </div>
+              <span className="bg-gradient-primary bg-clip-text text-transparent">AI Voicemail</span>
             </a>
-            <Button asChild>
-              <a href="/signup">Get Started</a>
-            </Button>
+
+            {/* Desktop Navigation */}
+            <div className="hidden md:flex items-center gap-4">
+              <a href="#pricing" className="text-muted-foreground hover:text-primary transition-colors font-medium">
+                Pricing
+              </a>
+              <a href="#faq" className="text-muted-foreground hover:text-primary transition-colors font-medium">
+                FAQ
+              </a>
+              <a href="/signin" className="text-muted-foreground hover:text-primary transition-colors font-medium">
+                Sign In
+              </a>
+              <Button asChild size="lg">
+                <a href="/signup">Get Started Free</a>
+              </Button>
+            </div>
+
+            {/* Mobile Menu Button */}
+            <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
+              <SheetTrigger asChild className="md:hidden">
+                <Button variant="ghost" size="icon">
+                  <Menu className="h-6 w-6" />
+                </Button>
+              </SheetTrigger>
+              <SheetContent side="right" className="w-[300px] sm:w-[400px]">
+                <nav className="flex flex-col gap-4 mt-8">
+                  <a 
+                    href="#pricing" 
+                    className="text-lg font-medium hover:text-primary transition-colors py-2"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    Pricing
+                  </a>
+                  <a 
+                    href="#faq" 
+                    className="text-lg font-medium hover:text-primary transition-colors py-2"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    FAQ
+                  </a>
+                  <a 
+                    href="/signin" 
+                    className="text-lg font-medium hover:text-primary transition-colors py-2"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    Sign In
+                  </a>
+                  <Button asChild size="lg" className="mt-4">
+                    <a href="/signup">Get Started Free</a>
+                  </Button>
+                </nav>
+              </SheetContent>
+            </Sheet>
           </div>
         </div>
       </header>
@@ -186,7 +240,7 @@ const Index = () => {
       </section>
 
       {/* Pricing Section */}
-      <section className="container mx-auto px-4 py-16 md:py-24 bg-secondary/30">
+      <section id="pricing" className="container mx-auto px-4 py-16 md:py-24 bg-secondary/30">
         <h2 className="text-3xl md:text-4xl font-bold text-center mb-12 text-foreground">
           Simple, Transparent Pricing
         </h2>
@@ -241,7 +295,7 @@ const Index = () => {
       </section>
 
       {/* FAQ Section */}
-      <section className="container mx-auto px-4 py-16 md:py-24">
+      <section id="faq" className="container mx-auto px-4 py-16 md:py-24">
         <h2 className="text-3xl md:text-4xl font-bold text-center mb-12 text-foreground">
           Frequently Asked Questions
         </h2>
