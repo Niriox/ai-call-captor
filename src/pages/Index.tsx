@@ -99,6 +99,24 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-gradient-hero">
+      {/* Header/Logo */}
+      <header className="container mx-auto px-4 py-6">
+        <div className="flex items-center justify-between">
+          <a href="/" className="flex items-center gap-2 text-2xl font-bold text-primary">
+            <Phone className="w-8 h-8" />
+            <span>AI Voicemail</span>
+          </a>
+          <div className="flex gap-4">
+            <a href="/signin" className="text-muted-foreground hover:text-primary transition-colors">
+              Sign In
+            </a>
+            <Button asChild>
+              <a href="/signup">Get Started</a>
+            </Button>
+          </div>
+        </div>
+      </header>
+
       {/* Hero Section */}
       <section className="container mx-auto px-4 py-16 md:py-24">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
