@@ -15,6 +15,8 @@ import Settings from "./pages/Settings";
 import Billing from "./pages/Billing";
 import Calls from "./pages/Calls";
 import CallDetail from "./pages/CallDetail";
+import ForgotPassword from "./pages/ForgotPassword";
+import ResetPassword from "./pages/ResetPassword";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -29,6 +31,8 @@ const App = () => (
           <Route path="/" element={<Index />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/signin" element={<Signin />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/reset-password" element={<ResetPassword />} />
           <Route path="/onboarding" element={<Onboarding />} />
           <Route path="/onboarding/payment" element={<OnboardingPaymentNew />} />
           <Route path="/dashboard" element={<Dashboard />} />
