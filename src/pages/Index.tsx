@@ -331,19 +331,39 @@ const Index = () => {
       </section>
 
       {/* About Section */}
-      <section className="container mx-auto px-4 py-16 md:py-24 bg-secondary/30">
-        <div className="max-w-3xl mx-auto text-center">
-          <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-6">
-            About AI Voicemail
-          </h2>
-          <div className="space-y-4 text-lg text-muted-foreground">
-            <p>
-              Built by Alex, a 24-year-old entrepreneur who saw small service businesses losing thousands to missed calls.
-            </p>
-            <p>
-              After talking to 1,000+ plumbers, HVAC contractors, and roofers, one thing was clear: you're too busy working to answer every call. That's where AI Voicemail comes in.
-            </p>
-          </div>
+      <section className="container mx-auto px-4 py-16 md:py-24">
+        <div className="max-w-4xl mx-auto">
+          <Card className="border-2 overflow-hidden">
+            <div className="grid md:grid-cols-2 gap-0">
+              {/* Left side - Visual */}
+              <div className="bg-gradient-to-br from-primary/10 via-primary/5 to-background p-8 md:p-12 flex flex-col justify-center">
+                <div className="space-y-4">
+                  <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-primary/20 mb-4">
+                    <Phone className="w-8 h-8 text-primary" />
+                  </div>
+                  <h2 className="text-3xl md:text-4xl font-bold text-foreground">
+                    About AI Voicemail
+                  </h2>
+                  <div className="h-1 w-20 bg-primary rounded-full"></div>
+                </div>
+              </div>
+              
+              {/* Right side - Content */}
+              <CardContent className="p-8 md:p-12 flex flex-col justify-center bg-card">
+                <div className="space-y-6">
+                  <p className="text-lg text-foreground leading-relaxed">
+                    Built by <span className="font-semibold text-primary">Alex</span>, a 24-year-old entrepreneur who saw small service businesses losing thousands to missed calls.
+                  </p>
+                  <p className="text-lg text-muted-foreground leading-relaxed">
+                    After talking to <span className="font-semibold text-foreground">1,000+ plumbers, HVAC contractors, and roofers</span>, one thing was clear: you're too busy working to answer every call.
+                  </p>
+                  <p className="text-lg text-foreground leading-relaxed font-medium">
+                    That's where AI Voicemail comes in.
+                  </p>
+                </div>
+              </CardContent>
+            </div>
+          </Card>
         </div>
       </section>
 
