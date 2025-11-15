@@ -35,8 +35,8 @@ const OnboardingPayment = () => {
   }, [navigate]);
 
   const handleContinue = () => {
-    // Redirect to main dashboard or home
-    navigate("/");
+    // Redirect to dashboard
+    navigate("/dashboard");
   };
 
   if (!businessInfo) {
