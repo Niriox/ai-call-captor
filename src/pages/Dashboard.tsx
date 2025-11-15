@@ -133,7 +133,7 @@ const Dashboard = () => {
               <a href="/dashboard" className="text-foreground font-medium hover:text-primary transition-colors">
                 Dashboard
               </a>
-              <a href="/settings" className="text-muted-foreground hover:text-primary transition-colors">
+              <a href="/dashboard/settings" className="text-muted-foreground hover:text-primary transition-colors">
                 Settings
               </a>
               <a href="/billing" className="text-muted-foreground hover:text-primary transition-colors">
@@ -233,7 +233,7 @@ const Dashboard = () => {
               <p className="text-muted-foreground mb-4 max-w-md">
                 We'll notify you via SMS and email when you receive your first call
               </p>
-              <Button variant="outline" onClick={() => navigate("/settings")}>
+              <Button variant="outline" onClick={() => navigate("/dashboard/settings")}>
                 <Settings className="mr-2 h-4 w-4" />
                 Test Your Setup
               </Button>
@@ -262,7 +262,7 @@ const Dashboard = () => {
                 <span className="text-sm">Configure your greeting</span>
               </div>
             </div>
-            <Button onClick={() => navigate("/settings")}>
+            <Button onClick={() => navigate("/dashboard/settings")}>
               <Settings className="mr-2 h-4 w-4" />
               Go to Settings
             </Button>

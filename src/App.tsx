@@ -9,6 +9,7 @@ import Signin from "./pages/Signin";
 import Onboarding from "./pages/Onboarding";
 import OnboardingPayment from "./pages/OnboardingPayment";
 import Dashboard from "./pages/Dashboard";
+import DashboardSettings from "./pages/DashboardSettings";
 import Settings from "./pages/Settings";
 import Billing from "./pages/Billing";
 import NotFound from "./pages/NotFound";
@@ -28,6 +29,7 @@ const App = () => (
           <Route path="/onboarding" element={<Onboarding />} />
           <Route path="/onboarding/payment" element={<OnboardingPayment />} />
           <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/dashboard/settings" element={<DashboardSettings />} />
           <Route path="/settings" element={<Settings />} />
           <Route path="/billing" element={<Billing />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
