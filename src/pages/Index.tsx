@@ -110,7 +110,7 @@ const Index = () => {
               AI Voicemail answers when you can't. Books appointments automatically. Sounds completely human.
             </p>
             <Button size="lg" className="text-lg px-8 shadow-elegant hover:shadow-xl transition-all">
-              Start Free 14-Day Trial
+              <a href="/signup">Start Free 14-Day Trial</a>
             </Button>
           </div>
           <div className="relative">
@@ -207,13 +207,15 @@ const Index = () => {
                 )}
               </CardContent>
               <CardFooter>
-                <Button 
-                  className="w-full" 
-                  variant={plan.highlighted ? "default" : "outline"}
-                  size="lg"
-                >
-                  {plan.cta}
-                </Button>
+                <a href={plan.name === "Enterprise" ? "mailto:sales@aivoicemail.com" : `/signup?plan=${plan.name.toLowerCase()}`} className="w-full">
+                  <Button 
+                    className="w-full" 
+                    variant={plan.highlighted ? "default" : "outline"}
+                    size="lg"
+                  >
+                    {plan.cta}
+                  </Button>
+                </a>
               </CardFooter>
             </Card>
           ))}
