@@ -14,7 +14,54 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      businesses: {
+        Row: {
+          business_name: string
+          business_phone: string
+          created_at: string
+          id: string
+          industry: string
+          notification_email: string
+          notification_phone: string
+          owner_name: string
+          selected_plan: string
+          service_area: string
+          services_offered: string[]
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          business_name: string
+          business_phone: string
+          created_at?: string
+          id?: string
+          industry: string
+          notification_email: string
+          notification_phone: string
+          owner_name: string
+          selected_plan: string
+          service_area: string
+          services_offered: string[]
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          business_name?: string
+          business_phone?: string
+          created_at?: string
+          id?: string
+          industry?: string
+          notification_email?: string
+          notification_phone?: string
+          owner_name?: string
+          selected_plan?: string
+          service_area?: string
+          services_offered?: string[]
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
