@@ -8,6 +8,7 @@ import Signup from "./pages/Signup";
 import Signin from "./pages/Signin";
 import Onboarding from "./pages/Onboarding";
 import OnboardingPayment from "./pages/OnboardingPayment";
+import OnboardingPaymentNew from "./pages/OnboardingPaymentNew";
 import Dashboard from "./pages/Dashboard";
 import DashboardSettings from "./pages/DashboardSettings";
 import Settings from "./pages/Settings";
@@ -27,7 +28,7 @@ const App = () => (
           <Route path="/signup" element={<Signup />} />
           <Route path="/signin" element={<Signin />} />
           <Route path="/onboarding" element={<Onboarding />} />
-          <Route path="/onboarding/payment" element={<OnboardingPayment />} />
+          <Route path="/onboarding/payment" element={<OnboardingPaymentNew />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/dashboard/settings" element={<DashboardSettings />} />
           <Route path="/settings" element={<Settings />} />

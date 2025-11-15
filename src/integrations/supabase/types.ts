@@ -20,13 +20,20 @@ export type Database = {
           business_phone: string
           created_at: string
           id: string
+          included_minutes: number | null
           industry: string
           notification_email: string
           notification_phone: string
           owner_name: string
+          plan_name: string | null
+          plan_price: number | null
           selected_plan: string
           service_area: string
           services_offered: string[]
+          stripe_customer_id: string | null
+          stripe_subscription_id: string | null
+          subscription_status: string | null
+          trial_ends_at: string | null
           updated_at: string
           user_id: string
         }
@@ -35,13 +42,20 @@ export type Database = {
           business_phone: string
           created_at?: string
           id?: string
+          included_minutes?: number | null
           industry: string
           notification_email: string
           notification_phone: string
           owner_name: string
+          plan_name?: string | null
+          plan_price?: number | null
           selected_plan: string
           service_area: string
           services_offered: string[]
+          stripe_customer_id?: string | null
+          stripe_subscription_id?: string | null
+          subscription_status?: string | null
+          trial_ends_at?: string | null
           updated_at?: string
           user_id: string
         }
@@ -50,13 +64,20 @@ export type Database = {
           business_phone?: string
           created_at?: string
           id?: string
+          included_minutes?: number | null
           industry?: string
           notification_email?: string
           notification_phone?: string
           owner_name?: string
+          plan_name?: string | null
+          plan_price?: number | null
           selected_plan?: string
           service_area?: string
           services_offered?: string[]
+          stripe_customer_id?: string | null
+          stripe_subscription_id?: string | null
+          subscription_status?: string | null
+          trial_ends_at?: string | null
           updated_at?: string
           user_id?: string
         }
