@@ -83,6 +83,60 @@ export type Database = {
         }
         Relationships: []
       }
+      calls: {
+        Row: {
+          business_id: string
+          call_duration_seconds: number | null
+          call_recording_url: string | null
+          call_status: string
+          call_transcript: Json | null
+          created_at: string
+          customer_address: string | null
+          customer_email: string | null
+          customer_name: string | null
+          customer_phone: string
+          id: string
+          preferred_time: string | null
+          service_needed: string | null
+          updated_at: string
+          urgency: string | null
+        }
+        Insert: {
+          business_id: string
+          call_duration_seconds?: number | null
+          call_recording_url?: string | null
+          call_status?: string
+          call_transcript?: Json | null
+          created_at?: string
+          customer_address?: string | null
+          customer_email?: string | null
+          customer_name?: string | null
+          customer_phone: string
+          id?: string
+          preferred_time?: string | null
+          service_needed?: string | null
+          updated_at?: string
+          urgency?: string | null
+        }
+        Update: {
+          business_id?: string
+          call_duration_seconds?: number | null
+          call_recording_url?: string | null
+          call_status?: string
+          call_transcript?: Json | null
+          created_at?: string
+          customer_address?: string | null
+          customer_email?: string | null
+          customer_name?: string | null
+          customer_phone?: string
+          id?: string
+          preferred_time?: string | null
+          service_needed?: string | null
+          updated_at?: string
+          urgency?: string | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
