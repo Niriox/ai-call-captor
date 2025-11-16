@@ -34,6 +34,7 @@ export type Database = {
           stripe_subscription_id: string | null
           subscription_status: string | null
           trial_ends_at: string | null
+          twilio_number: string | null
           updated_at: string
           user_id: string
         }
@@ -56,6 +57,7 @@ export type Database = {
           stripe_subscription_id?: string | null
           subscription_status?: string | null
           trial_ends_at?: string | null
+          twilio_number?: string | null
           updated_at?: string
           user_id: string
         }
@@ -78,6 +80,7 @@ export type Database = {
           stripe_subscription_id?: string | null
           subscription_status?: string | null
           trial_ends_at?: string | null
+          twilio_number?: string | null
           updated_at?: string
           user_id?: string
         }
