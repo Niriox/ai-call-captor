@@ -8,6 +8,7 @@ import { CheckCircle2 } from "lucide-react";
 const OnboardingPayment = () => {
   const navigate = useNavigate();
   const [businessInfo, setBusinessInfo] = useState<any>(null);
+  const [isProvisioning, setIsProvisioning] = useState(false);
 
   useEffect(() => {
     // Check if user is logged in
@@ -34,9 +35,25 @@ const OnboardingPayment = () => {
     });
   }, [navigate]);
 
-  const handleContinue = () => {
-    // Redirect to dashboard
-    navigate("/dashboard");
+  const handleContinue = async () => {
+    setIsProvisioning(true);
+    
+    try {
+      // Call provision-services edge function
+      const { data, error } = await supabase.functions.invoke('provision-services');
+      
+      if (error) {
+        console.error('Error provisioning services:', error);
+        // Continue to dashboard even if provisioning fails - it can be retried
+      } else {
+        console.log('Services provisioned successfully:', data);
+      }
+    } catch (err) {
+      console.error('Failed to provision services:', err);
+    } finally {
+      setIsProvisioning(false);
+      navigate("/dashboard");
+    }
   };
 
   if (!businessInfo) {
@@ -100,8 +117,13 @@ const OnboardingPayment = () => {
             <p className="text-sm text-muted-foreground font-medium">
               Almost done! One quick step to activate your AI Voicemail.
             </p>
-            <Button onClick={() => navigate("/dashboard/setup")} size="lg" className="w-full">
-              Complete Setup (30 seconds)
+            <Button 
+              onClick={handleContinue} 
+              size="lg" 
+              className="w-full"
+              disabled={isProvisioning}
+            >
+              {isProvisioning ? "Setting up your service..." : "Complete Setup (30 seconds)"}
             </Button>
           </div>
         </CardContent>
