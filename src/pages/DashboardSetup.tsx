@@ -14,6 +14,7 @@ const DashboardSetup = () => {
   const { toast } = useToast();
   const [twilioNumber, setTwilioNumber] = useState<string | null>(null);
   const [stripeCustomerId, setStripeCustomerId] = useState<string | null>(null);
+  const [hasPaymentMethod, setHasPaymentMethod] = useState<boolean>(false);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -24,6 +25,7 @@ const DashboardSetup = () => {
         return;
       }
 
+      // Fetch business data from database
       const { data, error } = await supabase
         .from("businesses")
         .select("twilio_number, stripe_customer_id")
@@ -37,10 +39,24 @@ const DashboardSetup = () => {
           description: "Failed to load your business data",
           variant: "destructive",
         });
-      } else {
-        setTwilioNumber(data?.twilio_number || null);
-        setStripeCustomerId(data?.stripe_customer_id || null);
+        setLoading(false);
+        return;
       }
+
+      setTwilioNumber(data?.twilio_number || null);
+      setStripeCustomerId(data?.stripe_customer_id || null);
+
+      // Check if user has payment method via Stripe
+      try {
+        const { data: paymentData, error: paymentError } = await supabase.functions.invoke('get-payment-method');
+        
+        if (!paymentError && paymentData) {
+          setHasPaymentMethod(!!paymentData.paymentMethod);
+        }
+      } catch (err) {
+        console.error("Error checking payment method:", err);
+      }
+
       setLoading(false);
     };
 
@@ -91,8 +107,8 @@ const DashboardSetup = () => {
     );
   }
 
-  // Payment gate if no stripe_customer_id
-  if (!stripeCustomerId) {
+  // Payment gate if no payment method
+  if (!stripeCustomerId && !hasPaymentMethod) {
     return (
       <div className="min-h-screen bg-gradient-hero">
         <div className="container mx-auto px-4 py-8">
