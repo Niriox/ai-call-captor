@@ -50,6 +50,9 @@ const Index = () => {
     highlighted: false
   }];
   const faqs = [{
+    question: "How hard is setup?",
+    answer: "Incredibly easy. You dial one code (*92[your-number]#) on your phone. Takes 30 seconds. No technical skills needed. No app to download. Works with any phone carrier. If you can make a phone call, you can set this up."
+  }, {
     question: "How quickly will I see results?",
     answer: "Most contractors book their first AI-captured job within 24-48 hours. The AI works 24/7, so you start capturing after-hours and weekend calls immediately—calls that used to go straight to voicemail."
   }, {
