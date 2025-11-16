@@ -14,10 +14,14 @@ const PLAN_CONFIG = {
     price: 35,
     minutes: 100,
     features: [
-      "100 minutes/month",
-      "AI-powered call handling",
-      "Email notifications",
-      "Basic analytics"
+      "100 minutes/month (~33 calls)",
+      "AI answers calls 24/7",
+      "Collects customer information",
+      "Instant SMS alerts with customer details",
+      "Detailed email summaries with full transcripts",
+      "Custom AI greeting",
+      "Business hours settings",
+      "Basic call logs"
     ]
   },
   professional: {
@@ -26,11 +30,12 @@ const PLAN_CONFIG = {
     price: 100,
     minutes: 300,
     features: [
-      "300 minutes/month",
-      "Advanced AI responses",
-      "SMS & Email notifications",
-      "Advanced analytics",
-      "Priority support"
+      "300 minutes/month (~100 calls)",
+      "Everything in Starter",
+      "Call recordings & transcripts",
+      "Advanced analytics dashboard",
+      "Priority email support",
+      "Daily call summaries"
     ]
   },
   business: {
@@ -39,12 +44,13 @@ const PLAN_CONFIG = {
     price: 300,
     minutes: 1000,
     features: [
-      "1000 minutes/month",
-      "Custom AI training",
-      "Multi-channel notifications",
-      "Full analytics suite",
-      "24/7 priority support",
-      "Dedicated account manager"
+      "1000 minutes/month (~333 calls)",
+      "Everything in Professional",
+      "Multiple team members",
+      "Custom service offerings",
+      "Advanced call routing",
+      "Dedicated support",
+      "Custom notification preferences"
     ]
   }
 };
