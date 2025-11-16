@@ -245,13 +245,13 @@ const Dashboard = () => {
         <Card>
           <CardHeader>
             <CardTitle>Complete Your Setup</CardTitle>
-            <CardDescription>Get the most out of AI Voicemail</CardDescription>
+            <CardDescription>⚡ Your AI is ready! Just activate it (30 seconds)</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="space-y-3">
               <div className="flex items-center gap-3">
                 <Circle className="w-5 h-5 text-muted-foreground" />
-                <span className="text-sm">Verify your phone number</span>
+                <span className="text-sm">Activate call forwarding (30 seconds)</span>
               </div>
               <div className="flex items-center gap-3">
                 <Circle className="w-5 h-5 text-muted-foreground" />
@@ -259,12 +259,11 @@ const Dashboard = () => {
               </div>
               <div className="flex items-center gap-3">
                 <Circle className="w-5 h-5 text-muted-foreground" />
-                <span className="text-sm">Configure your greeting</span>
+                <span className="text-sm">Customize your greeting (optional)</span>
               </div>
             </div>
-            <Button onClick={() => navigate("/dashboard/settings")}>
-              <Settings className="mr-2 h-4 w-4" />
-              Go to Settings
+            <Button onClick={() => navigate("/dashboard/setup")}>
+              Complete Setup
             </Button>
           </CardContent>
         </Card>
