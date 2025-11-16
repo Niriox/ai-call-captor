@@ -368,6 +368,28 @@ const DashboardSetup = () => {
                   <p className="text-muted-foreground">Setting up your number... refresh in 30 seconds</p>
                 </div>
               )}
+              
+              {/* Troubleshooting Button */}
+              <div className="mt-4 flex justify-center">
+                <Button
+                  onClick={() => triggerProvisioning(true)}
+                  variant="outline"
+                  size="sm"
+                  disabled={isProvisioning}
+                  className="text-muted-foreground"
+                >
+                  {isProvisioning ? (
+                    <>
+                      <Loader2 className="w-3 h-3 mr-2 animate-spin" />
+                      Requesting new number...
+                    </>
+                  ) : (
+                    <>
+                      Having trouble? Get a new number
+                    </>
+                  )}
+                </Button>
+              </div>
             </CardContent>
           </Card>
 
