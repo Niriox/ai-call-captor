@@ -175,18 +175,21 @@ const Index = () => {
       <section className="container mx-auto px-4 py-16 md:py-24">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           <div className="space-y-6 animate-fade-up">
+            <Badge className="bg-primary/10 text-primary hover:bg-primary/20 border-primary/20 text-sm px-4 py-2">
+              ⚡ 30-Second Setup • No App Required • Works Any Phone
+            </Badge>
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-foreground leading-tight">
-              Capture Every Lead, Even When You're Busy
+              Never Miss a Customer Call Again
             </h1>
             <p className="text-lg md:text-xl text-muted-foreground">
-              Stop losing $1,000s in missed calls. Our AI converts after-hours calls into booked appointments while you sleep. Built for plumbers, HVAC contractors, and roofers who refuse to leave money on the table.
+              AI answers when you can't. Books appointments. Texts you details. Setup in 30 seconds - just dial a code.
             </p>
-            <div className="flex flex-col sm:flex-row gap-4">
-              <Button size="lg" className="text-lg px-8 shadow-elegant hover:shadow-xl transition-all">
-                <a href="/signup">Start Free Trial</a>
+            <div className="flex flex-col gap-4">
+              <Button size="lg" className="text-lg px-8 shadow-elegant hover:shadow-xl transition-all w-fit">
+                <a href="/signup">Start Free 14-Day Trial</a>
               </Button>
-              <p className="text-sm text-muted-foreground self-center">
-                14-day trial • No credit card • Book your first job in 24 hours
+              <p className="text-sm text-muted-foreground">
+                Setup takes 30 seconds • No credit card required • Cancel anytime
               </p>
             </div>
           </div>
