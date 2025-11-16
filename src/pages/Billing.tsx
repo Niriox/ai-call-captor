@@ -117,6 +117,37 @@ const Billing = () => {
   };
 
   const handleUpdatePaymentMethod = async () => {
+    // If no Stripe customer exists yet, redirect to checkout to add payment method
+    if (!businessInfo?.stripe_customer_id) {
+      const selectedPlan = businessInfo?.selected_plan || 'starter';
+      const planConfig = PLAN_CONFIG[selectedPlan as keyof typeof PLAN_CONFIG];
+      
+      setActionLoading(true);
+      try {
+        const { data, error } = await supabase.functions.invoke("create-checkout", {
+          body: { 
+            priceId: planConfig.priceId,
+            planName: selectedPlan
+          }
+        });
+        
+        if (error) throw error;
+        if (data?.url) {
+          window.open(data.url, '_blank');
+        }
+      } catch (error: any) {
+        toast({
+          title: "Error",
+          description: error.message || "Failed to open checkout",
+          variant: "destructive",
+        });
+      } finally {
+        setActionLoading(false);
+      }
+      return;
+    }
+
+    // If customer exists, open Stripe portal to manage payment
     setActionLoading(true);
     try {
       const { data, error } = await supabase.functions.invoke("create-portal-session");
