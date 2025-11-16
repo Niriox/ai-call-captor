@@ -95,6 +95,18 @@ serve(async (req) => {
 
         if (!purchaseResponse.ok) {
           const rawMsg = JSON.stringify(purchaseData);
+          
+          // Check for SUBSCRIPTION_NOT_ACTIVE error
+          if (rawMsg.includes('SUBSCRIPTION_NOT_ACTIVE')) {
+            return new Response(
+              JSON.stringify({
+                error: 'Bland.ai requires an active subscription plan. Please visit https://app.bland.ai/settings/billing to subscribe to a plan.',
+                code: 'BLAND_SUBSCRIPTION_REQUIRED',
+              }),
+              { status: 402, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+            );
+          }
+          
           // Specific handling for missing payment method on Bland account
           if (rawMsg.includes('MISSING_PAYMENT_METHOD')) {
             // Fallback: try to reuse an existing number even when forceNew was requested
@@ -158,9 +170,14 @@ When a customer calls:
 
 Keep the conversation natural and brief. If the customer seems in a hurry, prioritize getting their phone number and service needed.`;
 
+    // Verify we have a phone number before configuring
+    if (!phoneNumber) {
+      throw new Error('No phone number available for configuration');
+    }
+
     // 3. Configure the Bland.ai inbound number with AI agent and webhook
     const updateNumberResponse = await fetch(
-      `https://api.bland.ai/v1/inbound/${encodeURIComponent(phoneNumber!)}`,
+      `https://api.bland.ai/v1/inbound/${encodeURIComponent(phoneNumber)}`,
       {
         method: 'POST',
         headers: {
