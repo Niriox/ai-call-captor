@@ -38,55 +38,104 @@ serve(async (req) => {
 
     console.log('Provisioning services for business:', business.id);
 
-    // 1. Purchase Twilio phone number
+    // 1. Configure Twilio phone number (update existing or purchase new)
     const twilioAccountSid = Deno.env.get('TWILIO_ACCOUNT_SID');
     const twilioAuthToken = Deno.env.get('TWILIO_AUTH_TOKEN');
     const twilioAuth = btoa(`${twilioAccountSid}:${twilioAuthToken}`);
 
-    // Search for available phone numbers (area code based on service area if possible)
-    const searchResponse = await fetch(
-      `https://api.twilio.com/2010-04-01/Accounts/${twilioAccountSid}/AvailablePhoneNumbers/US/Local.json?SmsEnabled=true&VoiceEnabled=true&Limit=1`,
-      {
-        headers: {
-          'Authorization': `Basic ${twilioAuth}`,
-        },
+    const twilioIncomingUrl = `${supabaseUrl}/functions/v1/twilio-incoming`;
+
+    let phoneNumber: string | null = business.twilio_number;
+
+    if (phoneNumber) {
+      // Update existing number's webhook to twilio-incoming
+      const listResp = await fetch(
+        `https://api.twilio.com/2010-04-01/Accounts/${twilioAccountSid}/IncomingPhoneNumbers.json?PhoneNumber=${encodeURIComponent(phoneNumber)}`,
+        {
+          headers: { 'Authorization': `Basic ${twilioAuth}` },
+        }
+      );
+
+      const listData = await listResp.json();
+      console.log('Existing number lookup:', listData);
+
+      const incoming = listData.incoming_phone_numbers?.[0];
+      if (!incoming) {
+        throw new Error(`Twilio number ${phoneNumber} not found in account`);
       }
-    );
 
-    const searchData = await searchResponse.json();
-    console.log('Available numbers:', searchData);
+      const numberSid = incoming.sid;
 
-    if (!searchData.available_phone_numbers || searchData.available_phone_numbers.length === 0) {
-      throw new Error('No available phone numbers found');
+      const updateResp = await fetch(
+        `https://api.twilio.com/2010-04-01/Accounts/${twilioAccountSid}/IncomingPhoneNumbers/${numberSid}.json`,
+        {
+          method: 'POST',
+          headers: {
+            'Authorization': `Basic ${twilioAuth}`,
+            'Content-Type': 'application/x-www-form-urlencoded',
+          },
+          body: new URLSearchParams({
+            VoiceUrl: twilioIncomingUrl,
+            VoiceMethod: 'POST',
+            SmsUrl: twilioIncomingUrl,
+            SmsMethod: 'POST',
+          }),
+        }
+      );
+
+      const updateData = await updateResp.json();
+      console.log('Updated existing phone webhook:', updateData);
+
+      if (!updateResp.ok) {
+        throw new Error(`Failed to update phone webhook: ${JSON.stringify(updateData)}`);
+      }
+    } else {
+      // Search for available phone numbers (area code based on service area if possible)
+      const searchResponse = await fetch(
+        `https://api.twilio.com/2010-04-01/Accounts/${twilioAccountSid}/AvailablePhoneNumbers/US/Local.json?SmsEnabled=true&VoiceEnabled=true&Limit=1`,
+        {
+          headers: {
+            'Authorization': `Basic ${twilioAuth}`,
+          },
+        }
+      );
+
+      const searchData = await searchResponse.json();
+      console.log('Available numbers:', searchData);
+
+      if (!searchData.available_phone_numbers || searchData.available_phone_numbers.length === 0) {
+        throw new Error('No available phone numbers found');
+      }
+
+      phoneNumber = searchData.available_phone_numbers[0].phone_number;
+
+      // Purchase the phone number with correct webhook
+      const purchaseResponse = await fetch(
+        `https://api.twilio.com/2010-04-01/Accounts/${twilioAccountSid}/IncomingPhoneNumbers.json`,
+        {
+          method: 'POST',
+          headers: {
+            'Authorization': `Basic ${twilioAuth}`,
+            'Content-Type': 'application/x-www-form-urlencoded',
+          },
+          body: new URLSearchParams({
+            PhoneNumber: phoneNumber,
+            VoiceUrl: twilioIncomingUrl,
+            VoiceMethod: 'POST',
+            SmsUrl: twilioIncomingUrl,
+            SmsMethod: 'POST',
+          }),
+        }
+      );
+
+      const purchaseData = await purchaseResponse.json();
+      console.log('Purchased phone number:', purchaseData);
+
+      if (!purchaseResponse.ok) {
+        throw new Error(`Failed to purchase phone number: ${JSON.stringify(purchaseData)}`);
+      }
     }
 
-    const phoneNumber = searchData.available_phone_numbers[0].phone_number;
-
-    // Purchase the phone number
-    const purchaseResponse = await fetch(
-      `https://api.twilio.com/2010-04-01/Accounts/${twilioAccountSid}/IncomingPhoneNumbers.json`,
-      {
-        method: 'POST',
-        headers: {
-          'Authorization': `Basic ${twilioAuth}`,
-          'Content-Type': 'application/x-www-form-urlencoded',
-        },
-        body: new URLSearchParams({
-          PhoneNumber: phoneNumber,
-          VoiceUrl: `https://genujygrllrnlkawdjhk.supabase.co/functions/v1/twilio-webhook`,
-          VoiceMethod: 'POST',
-          SmsUrl: `https://genujygrllrnlkawdjhk.supabase.co/functions/v1/twilio-webhook`,
-          SmsMethod: 'POST',
-        }),
-      }
-    );
-
-    const purchaseData = await purchaseResponse.json();
-    console.log('Purchased phone number:', purchaseData);
-
-    if (!purchaseResponse.ok) {
-      throw new Error(`Failed to purchase phone number: ${JSON.stringify(purchaseData)}`);
-    }
 
     // 2. Create Bland AI agent
     const blandApiKey = Deno.env.get('BLAND_API_KEY');
