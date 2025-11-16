@@ -96,9 +96,14 @@ const OnboardingPayment = () => {
             </ul>
           </div>
 
-          <Button onClick={handleContinue} size="lg" className="w-full">
-            Complete Setup
-          </Button>
+          <div className="text-center space-y-2">
+            <p className="text-sm text-muted-foreground font-medium">
+              Almost done! One quick step to activate your AI Voicemail.
+            </p>
+            <Button onClick={() => navigate("/dashboard/setup")} size="lg" className="w-full">
+              Complete Setup (30 seconds)
+            </Button>
+          </div>
         </CardContent>
       </Card>
     </div>
