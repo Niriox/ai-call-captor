@@ -60,7 +60,7 @@ const Index = () => {
     answer: "Absolutely. The AI sounds natural and professional. Most customers don't even realize they're talking to AI. They just appreciate getting a real response instead of voicemail."
   }, {
     question: "What if I'm already using a call service?",
-    answer: "Unlike traditional answering services, our AI doesn't just take messages—it actively collects job details, preferred times, and urgency level. You get qualified leads, not just names and numbers. Plus it works instantly when you can't answer, no delays."
+    answer: "Unlike traditional answering services, our AI doesn't just take messages—it actively collects job details, preferred times, and urgency levels. You get qualified leads, not just names and numbers. Plus, it works instantly when you can't answer, with no delays."
   }, {
     question: "How much revenue am I losing to missed calls right now?",
     answer: "Industry data shows contractors miss 30-40% of calls. If your average job is $500 and you get 10 calls/week, that's potentially $6,000-$8,000/month in lost revenue. Our service costs a fraction of one lost job."
@@ -183,7 +183,7 @@ const Index = () => {
               <CardTitle className="text-xl">Never Lose a Lead</CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-muted-foreground">Whether you're on a job, driving, or with family—every caller gets a professional response instantly</p>
+              <p className="text-muted-foreground">Whether you're on a job, driving, or with family—every caller gets a professional response instantly.</p>
             </CardContent>
           </Card>
 
@@ -195,7 +195,7 @@ const Index = () => {
               <CardTitle className="text-xl">Book While You Sleep</CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-muted-foreground">AI collects all job details and preferred times. Wake up to a full schedule, not voicemails</p>
+              <p className="text-muted-foreground">AI collects all job details and preferred times. Wake up to a full schedule, not voicemails.</p>
             </CardContent>
           </Card>
 
@@ -207,7 +207,7 @@ const Index = () => {
               <CardTitle className="text-xl">Focus on Real Work</CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-muted-foreground">Stop playing phone tag. Get organized lead details via text, ready to convert into paying jobs</p>
+              <p className="text-muted-foreground">Stop playing phone tag. Get organized lead details via text, ready to convert into paying jobs.</p>
             </CardContent>
           </Card>
         </div>
