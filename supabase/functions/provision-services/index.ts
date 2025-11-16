@@ -143,7 +143,46 @@ serve(async (req) => {
       console.log('Purchased phone number:', purchaseData);
 
       if (!purchaseResponse.ok) {
-        throw new Error(`Failed to purchase phone number: ${JSON.stringify(purchaseData)}`);
+        const msg = (purchaseData?.message ?? '').toString().toLowerCase();
+        console.log('Purchase failed, message:', purchaseData);
+        if (msg.includes('trial accounts are allowed only one twilio number')) {
+          // Fallback for Twilio trial: update existing number's webhooks instead of purchasing
+          const listExisting = await fetch(
+            `https://api.twilio.com/2010-04-01/Accounts/${twilioAccountSid}/IncomingPhoneNumbers.json?PageSize=20`,
+            { headers: { 'Authorization': `Basic ${twilioAuth}` } }
+          );
+          const existingData = await listExisting.json();
+          console.log('Existing numbers (trial fallback):', existingData);
+          const incoming = existingData.incoming_phone_numbers?.[0];
+          if (!incoming) {
+            throw new Error('Twilio trial: no existing number to update');
+          }
+          const numberSid = incoming.sid;
+          phoneNumber = incoming.phone_number as string;
+          const updateResp = await fetch(
+            `https://api.twilio.com/2010-04-01/Accounts/${twilioAccountSid}/IncomingPhoneNumbers/${numberSid}.json`,
+            {
+              method: 'POST',
+              headers: {
+                'Authorization': `Basic ${twilioAuth}`,
+                'Content-Type': 'application/x-www-form-urlencoded',
+              },
+              body: new URLSearchParams({
+                VoiceUrl: twilioIncomingUrl,
+                VoiceMethod: 'POST',
+                SmsUrl: twilioIncomingUrl,
+                SmsMethod: 'POST',
+              }),
+            }
+          );
+          const updateData = await updateResp.json();
+          console.log('Updated trial existing number webhooks:', updateData);
+          if (!updateResp.ok) {
+            throw new Error(`Failed to update existing trial number: ${JSON.stringify(updateData)}`);
+          }
+        } else {
+          throw new Error(`Failed to purchase phone number: ${JSON.stringify(purchaseData)}`);
+        }
       }
     }
 
