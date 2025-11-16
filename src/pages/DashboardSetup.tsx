@@ -126,7 +126,11 @@ const DashboardSetup = () => {
 
   const getActivationCode = (phone: string) => {
     const cleaned = phone.replace(/\D/g, "");
-    return `*92${cleaned}#`;
+    // Remove country code "1" if present (11 digits starting with 1)
+    const phoneNumber = (cleaned.length === 11 && cleaned.startsWith("1")) 
+      ? cleaned.slice(1) 
+      : cleaned;
+    return `*92${phoneNumber}#`;
   };
 
   const copyToClipboard = (text: string, label: string) => {
