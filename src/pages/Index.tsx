@@ -213,6 +213,121 @@ const Index = () => {
         </div>
       </section>
 
+      {/* See It In Action Section */}
+      <section className="container mx-auto px-4 py-16 md:py-24 bg-gradient-to-br from-primary/5 via-background to-secondary/10">
+        <div className="text-center mb-12">
+          <h2 className="text-3xl md:text-4xl font-bold mb-4 text-foreground">
+            See It In Action
+          </h2>
+          <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+            Get customer details instantly - no phone tag
+          </p>
+        </div>
+        
+        <div className="max-w-4xl mx-auto">
+          <div className="grid md:grid-cols-2 gap-8 items-center">
+            {/* Phone Mockup */}
+            <div className="flex justify-center md:justify-end">
+              <div className="relative">
+                {/* Phone Frame */}
+                <div className="w-[320px] h-[640px] bg-foreground rounded-[3rem] p-3 shadow-2xl border-8 border-foreground">
+                  {/* Screen */}
+                  <div className="w-full h-full bg-background rounded-[2.5rem] overflow-hidden">
+                    {/* Status Bar */}
+                    <div className="bg-background px-6 py-3 flex justify-between items-center text-xs">
+                      <span className="font-semibold">9:41</span>
+                      <div className="flex gap-1 items-center">
+                        <div className="w-4 h-3 border border-current rounded-sm">
+                          <div className="w-2 h-2 bg-current m-0.5 rounded-sm"></div>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    {/* Notification */}
+                    <div className="px-4 py-6">
+                      <div className="bg-card rounded-2xl shadow-elegant border border-border overflow-hidden animate-fade-up">
+                        {/* Notification Header */}
+                        <div className="bg-primary/10 px-4 py-3 border-b border-border flex items-center gap-2">
+                          <MessageSquare className="w-5 h-5 text-primary" />
+                          <span className="font-semibold text-sm text-foreground">New call from AI Voicemail</span>
+                        </div>
+                        
+                        {/* Notification Content */}
+                        <div className="p-4 space-y-3">
+                          <div className="flex items-start gap-2">
+                            <span className="font-semibold text-muted-foreground text-sm min-w-[80px]">Customer:</span>
+                            <span className="font-medium text-foreground text-sm">Mike Johnson</span>
+                          </div>
+                          <div className="flex items-start gap-2">
+                            <span className="font-semibold text-muted-foreground text-sm min-w-[80px]">Phone:</span>
+                            <span className="font-medium text-foreground text-sm">(555) 123-4567</span>
+                          </div>
+                          <div className="flex items-start gap-2">
+                            <span className="font-semibold text-muted-foreground text-sm min-w-[80px]">Service:</span>
+                            <span className="font-medium text-foreground text-sm">Water heater repair</span>
+                          </div>
+                          <div className="flex items-start gap-2">
+                            <span className="font-semibold text-muted-foreground text-sm min-w-[80px]">Address:</span>
+                            <span className="font-medium text-foreground text-sm">123 Main St, Denver</span>
+                          </div>
+                          <div className="flex items-start gap-2">
+                            <span className="font-semibold text-muted-foreground text-sm min-w-[80px]">Urgency:</span>
+                            <Badge className="bg-destructive text-destructive-foreground text-xs">ASAP</Badge>
+                          </div>
+                          <div className="flex items-start gap-2">
+                            <span className="font-semibold text-muted-foreground text-sm min-w-[80px]">Notes:</span>
+                            <span className="font-medium text-foreground text-sm">Water leaking, needs help today</span>
+                          </div>
+                        </div>
+                        
+                        {/* Timestamp */}
+                        <div className="px-4 py-2 bg-secondary/30 border-t border-border">
+                          <span className="text-xs text-muted-foreground">Just now</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                
+                {/* Glow Effect */}
+                <div className="absolute -inset-4 bg-primary/20 blur-3xl -z-10 rounded-full"></div>
+              </div>
+            </div>
+            
+            {/* Text Content */}
+            <div className="space-y-6">
+              <div className="space-y-4">
+                <div className="inline-flex items-center gap-2 bg-primary/10 px-4 py-2 rounded-full">
+                  <MessageSquare className="w-5 h-5 text-primary" />
+                  <span className="font-semibold text-primary">10 Seconds</span>
+                </div>
+                <h3 className="text-2xl md:text-3xl font-bold text-foreground">
+                  Customer Info Delivered Instantly
+                </h3>
+                <p className="text-lg text-muted-foreground">
+                  You get this text in 10 seconds. Customer info delivered instantly while you're on the job.
+                </p>
+              </div>
+              
+              <div className="space-y-3">
+                <div className="flex items-start gap-3">
+                  <Check className="w-6 h-6 text-primary flex-shrink-0 mt-0.5" />
+                  <p className="text-foreground">Every detail captured by AI</p>
+                </div>
+                <div className="flex items-start gap-3">
+                  <Check className="w-6 h-6 text-primary flex-shrink-0 mt-0.5" />
+                  <p className="text-foreground">Ready to call back and close</p>
+                </div>
+                <div className="flex items-start gap-3">
+                  <Check className="w-6 h-6 text-primary flex-shrink-0 mt-0.5" />
+                  <p className="text-foreground">No more missed opportunities</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Pricing Section */}
       <section id="pricing" className="container mx-auto px-4 py-16 md:py-24 bg-secondary/30">
         <h2 className="text-3xl md:text-4xl font-bold text-center mb-4 text-foreground">
