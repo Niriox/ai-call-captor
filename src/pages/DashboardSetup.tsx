@@ -16,6 +16,43 @@ const DashboardSetup = () => {
   const [stripeCustomerId, setStripeCustomerId] = useState<string | null>(null);
   const [hasPaymentMethod, setHasPaymentMethod] = useState<boolean>(false);
   const [loading, setLoading] = useState(true);
+  const [isProvisioning, setIsProvisioning] = useState(false);
+
+  const triggerProvisioning = async () => {
+    setIsProvisioning(true);
+    try {
+      const { data, error } = await supabase.functions.invoke('provision-services');
+      
+      if (error) {
+        console.error('Error provisioning services:', error);
+        toast({
+          title: "Provisioning Error",
+          description: "Failed to provision services. Please try again or contact support.",
+          variant: "destructive",
+        });
+      } else {
+        console.log('Services provisioned successfully:', data);
+        toast({
+          title: "Provisioning Started",
+          description: "Your phone number is being set up. This may take up to 60 seconds.",
+        });
+        
+        // Refresh page after a delay to show the new number
+        setTimeout(() => {
+          window.location.reload();
+        }, 3000);
+      }
+    } catch (err) {
+      console.error('Failed to provision services:', err);
+      toast({
+        title: "Error",
+        description: "An unexpected error occurred. Please refresh and try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsProvisioning(false);
+    }
+  };
 
   useEffect(() => {
     const fetchBusinessData = async () => {
@@ -51,7 +88,14 @@ const DashboardSetup = () => {
         const { data: paymentData, error: paymentError } = await supabase.functions.invoke('get-payment-method');
         
         if (!paymentError && paymentData) {
-          setHasPaymentMethod(!!paymentData.paymentMethod);
+          const hasPayment = !!paymentData.paymentMethod;
+          setHasPaymentMethod(hasPayment);
+          
+          // Auto-trigger provisioning if payment exists but no Twilio number
+          if (hasPayment && !data?.twilio_number && !isProvisioning) {
+            console.log('Auto-triggering provisioning...');
+            triggerProvisioning();
+          }
         }
       } catch (err) {
         console.error("Error checking payment method:", err);
@@ -212,14 +256,32 @@ const DashboardSetup = () => {
                   </p>
                 </div>
 
-                <Button 
-                  onClick={() => window.location.reload()} 
-                  variant="outline"
-                  className="w-full h-11"
-                  size="lg"
-                >
-                  Refresh Now
-                </Button>
+                <div className="flex gap-3">
+                  <Button 
+                    onClick={() => window.location.reload()} 
+                    variant="outline"
+                    className="flex-1 h-11"
+                    size="lg"
+                    disabled={isProvisioning}
+                  >
+                    Refresh Now
+                  </Button>
+                  <Button 
+                    onClick={triggerProvisioning} 
+                    className="flex-1 h-11"
+                    size="lg"
+                    disabled={isProvisioning}
+                  >
+                    {isProvisioning ? (
+                      <>
+                        <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                        Setting up...
+                      </>
+                    ) : (
+                      'Start Setup Now'
+                    )}
+                  </Button>
+                </div>
               </CardContent>
             </Card>
           </div>
