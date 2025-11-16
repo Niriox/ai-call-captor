@@ -38,12 +38,8 @@ serve(async (req) => {
 
     console.log('Provisioning services for business:', business.id);
 
-    // 1. Configure Twilio phone number (update existing or purchase new)
-    const twilioAccountSid = Deno.env.get('TWILIO_ACCOUNT_SID');
-    const twilioAuthToken = Deno.env.get('TWILIO_AUTH_TOKEN');
-    const twilioAuth = btoa(`${twilioAccountSid}:${twilioAuthToken}`);
-
-    const twilioIncomingUrl = `${supabaseUrl}/functions/v1/twilio-incoming`;
+    const blandApiKey = Deno.env.get('BLAND_API_KEY');
+    const blandWebhookUrl = `${supabaseUrl}/functions/v1/bland-webhook`;
 
     // Optional flag to force purchasing a brand-new number
     let forceNew = false;
@@ -58,138 +54,32 @@ serve(async (req) => {
 
     let phoneNumber: string | null = business.twilio_number;
 
-    if (phoneNumber && !forceNew) {
-      // Update existing number's webhook to twilio-incoming
-      const listResp = await fetch(
-        `https://api.twilio.com/2010-04-01/Accounts/${twilioAccountSid}/IncomingPhoneNumbers.json?PhoneNumber=${encodeURIComponent(phoneNumber)}`,
-        {
-          headers: { 'Authorization': `Basic ${twilioAuth}` },
-        }
-      );
-
-      const listData = await listResp.json();
-      console.log('Existing number lookup:', listData);
-
-      const incoming = listData.incoming_phone_numbers?.[0];
-      if (!incoming) {
-        throw new Error(`Twilio number ${phoneNumber} not found in account`);
-      }
-
-      const numberSid = incoming.sid;
-
-      const updateResp = await fetch(
-        `https://api.twilio.com/2010-04-01/Accounts/${twilioAccountSid}/IncomingPhoneNumbers/${numberSid}.json`,
-        {
-          method: 'POST',
-          headers: {
-            'Authorization': `Basic ${twilioAuth}`,
-            'Content-Type': 'application/x-www-form-urlencoded',
-          },
-          body: new URLSearchParams({
-            VoiceUrl: twilioIncomingUrl,
-            VoiceMethod: 'POST',
-            SmsUrl: twilioIncomingUrl,
-            SmsMethod: 'POST',
-          }),
-        }
-      );
-
-      const updateData = await updateResp.json();
-      console.log('Updated existing phone webhook:', updateData);
-
-      if (!updateResp.ok) {
-        throw new Error(`Failed to update phone webhook: ${JSON.stringify(updateData)}`);
-      }
-    } else {
-      // Search for available phone numbers (area code based on service area if possible)
-      const searchResponse = await fetch(
-        `https://api.twilio.com/2010-04-01/Accounts/${twilioAccountSid}/AvailablePhoneNumbers/US/Local.json?SmsEnabled=true&VoiceEnabled=true&Limit=1`,
-        {
-          headers: {
-            'Authorization': `Basic ${twilioAuth}`,
-          },
-        }
-      );
-
-      const searchData = await searchResponse.json();
-      console.log('Available numbers:', searchData);
-
-      if (!searchData.available_phone_numbers || searchData.available_phone_numbers.length === 0) {
-        throw new Error('No available phone numbers found');
-      }
-
-      phoneNumber = searchData.available_phone_numbers[0].phone_number as string;
-
-      // Purchase the phone number with correct webhook
-      const purchaseResponse = await fetch(
-        `https://api.twilio.com/2010-04-01/Accounts/${twilioAccountSid}/IncomingPhoneNumbers.json`,
-        {
-          method: 'POST',
-          headers: {
-            'Authorization': `Basic ${twilioAuth}`,
-            'Content-Type': 'application/x-www-form-urlencoded',
-          },
-          body: new URLSearchParams({
-            PhoneNumber: phoneNumber,
-            VoiceUrl: twilioIncomingUrl,
-            VoiceMethod: 'POST',
-            SmsUrl: twilioIncomingUrl,
-            SmsMethod: 'POST',
-          }),
-        }
-      );
+    // 1. Purchase or use existing Bland.ai phone number
+    if (!phoneNumber || forceNew) {
+      // Purchase a new phone number from Bland.ai
+      const purchaseResponse = await fetch('https://api.bland.ai/numbers/purchase', {
+        method: 'POST',
+        headers: {
+          'Authorization': blandApiKey!,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          area_code: '415', // Default area code, could be customized based on service_area
+          country_code: 'US',
+        }),
+      });
 
       const purchaseData = await purchaseResponse.json();
-      console.log('Purchased phone number:', purchaseData);
+      console.log('Bland phone purchase response:', purchaseData);
 
       if (!purchaseResponse.ok) {
-        const msg = (purchaseData?.message ?? '').toString().toLowerCase();
-        console.log('Purchase failed, message:', purchaseData);
-        if (msg.includes('trial accounts are allowed only one twilio number')) {
-          // Fallback for Twilio trial: update existing number's webhooks instead of purchasing
-          const listExisting = await fetch(
-            `https://api.twilio.com/2010-04-01/Accounts/${twilioAccountSid}/IncomingPhoneNumbers.json?PageSize=20`,
-            { headers: { 'Authorization': `Basic ${twilioAuth}` } }
-          );
-          const existingData = await listExisting.json();
-          console.log('Existing numbers (trial fallback):', existingData);
-          const incoming = existingData.incoming_phone_numbers?.[0];
-          if (!incoming) {
-            throw new Error('Twilio trial: no existing number to update');
-          }
-          const numberSid = incoming.sid;
-          phoneNumber = incoming.phone_number as string;
-          const updateResp = await fetch(
-            `https://api.twilio.com/2010-04-01/Accounts/${twilioAccountSid}/IncomingPhoneNumbers/${numberSid}.json`,
-            {
-              method: 'POST',
-              headers: {
-                'Authorization': `Basic ${twilioAuth}`,
-                'Content-Type': 'application/x-www-form-urlencoded',
-              },
-              body: new URLSearchParams({
-                VoiceUrl: twilioIncomingUrl,
-                VoiceMethod: 'POST',
-                SmsUrl: twilioIncomingUrl,
-                SmsMethod: 'POST',
-              }),
-            }
-          );
-          const updateData = await updateResp.json();
-          console.log('Updated trial existing number webhooks:', updateData);
-          if (!updateResp.ok) {
-            throw new Error(`Failed to update existing trial number: ${JSON.stringify(updateData)}`);
-          }
-        } else {
-          throw new Error(`Failed to purchase phone number: ${JSON.stringify(purchaseData)}`);
-        }
+        throw new Error(`Failed to purchase Bland phone number: ${JSON.stringify(purchaseData)}`);
       }
+
+      phoneNumber = purchaseData.phone_number;
     }
 
-
-    // 2. Create Bland AI agent
-    const blandApiKey = Deno.env.get('BLAND_API_KEY');
-    
+    // 2. Create AI agent prompt
     const agentPrompt = `You are an AI voicemail assistant for ${business.business_name}, a ${business.industry} business serving ${business.service_area}.
 
 Your job is to answer calls when the business owner is busy and collect customer information. Be friendly, professional, and efficient.
@@ -208,30 +98,35 @@ When a customer calls:
 
 Keep the conversation natural and brief. If the customer seems in a hurry, prioritize getting their phone number and service needed.`;
 
-    const blandResponse = await fetch('https://api.bland.ai/v1/agents', {
-      method: 'POST',
-      headers: {
-        'Authorization': blandApiKey!,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        prompt: agentPrompt,
-        voice: 'maya', // Professional, clear voice
-        webhook: `${supabaseUrl}/functions/v1/bland-webhook`,
-        transfer_phone_number: business.business_phone,
-        language: 'en',
-        max_duration: 5, // 5 minutes max
-      }),
-    });
+    // 3. Configure the Bland.ai inbound number with AI agent and webhook
+    const updateNumberResponse = await fetch(
+      `https://api.bland.ai/v1/inbound/${encodeURIComponent(phoneNumber!)}`,
+      {
+        method: 'POST',
+        headers: {
+          'Authorization': blandApiKey!,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          prompt: agentPrompt,
+          voice: 'maya',
+          webhook: blandWebhookUrl,
+          transfer_phone_number: business.business_phone,
+          language: 'en',
+          max_duration: 5,
+          record: true,
+        }),
+      }
+    );
 
-    const blandData = await blandResponse.json();
-    console.log('Created Bland AI agent:', blandData);
+    const updateNumberData = await updateNumberResponse.json();
+    console.log('Configured Bland inbound number:', updateNumberData);
 
-    if (!blandResponse.ok) {
-      throw new Error(`Failed to create Bland AI agent: ${JSON.stringify(blandData)}`);
+    if (!updateNumberResponse.ok) {
+      throw new Error(`Failed to configure Bland inbound number: ${JSON.stringify(updateNumberData)}`);
     }
 
-    // 3. Update business record with phone number and agent info
+    // 4. Update business record with phone number
     const { error: updateError } = await supabase
       .from('businesses')
       .update({
@@ -245,13 +140,13 @@ Keep the conversation natural and brief. If the customer seems in a hurry, prior
       throw updateError;
     }
 
-    console.log('Successfully provisioned services');
+    console.log('Successfully provisioned Bland.ai services');
 
     return new Response(
       JSON.stringify({
         success: true,
         twilio_number: phoneNumber,
-        agent_id: blandData.agent_id,
+        message: 'Phone number provisioned with Bland.ai',
       }),
       {
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
