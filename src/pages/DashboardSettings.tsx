@@ -45,7 +45,13 @@ const businessInfoSchema = z.object({
   industry: z.string().min(1),
   serviceArea: z.string().trim().min(1).max(100),
   servicesOffered: z.array(z.string()).min(1),
-});
+  customService: z.string().trim().max(200).optional(),
+}).refine((data) => {
+  if (data.servicesOffered.includes("other") && !data.customService) {
+    return false;
+  }
+  return true;
+}, { message: "Please specify your service", path: ["customService"] });
 
 const DashboardSettings = () => {
   const navigate = useNavigate();
@@ -64,6 +70,7 @@ const DashboardSettings = () => {
   const [industry, setIndustry] = useState("");
   const [serviceArea, setServiceArea] = useState("");
   const [servicesOffered, setServicesOffered] = useState<string[]>([]);
+  const [customService, setCustomService] = useState("");
   
   // AI Configuration
   const [businessHours, setBusinessHours] = useState("24/7");
@@ -117,7 +124,23 @@ const DashboardSettings = () => {
       setBusinessPhone(data.business_phone);
       setIndustry(data.industry);
       setServiceArea(data.service_area);
-      setServicesOffered(data.services_offered || []);
+      
+      // Parse services to extract custom service if present
+      const services = data.services_offered || [];
+      const parsedServices: string[] = [];
+      let customServiceText = "";
+      
+      services.forEach((service: string) => {
+        if (service.startsWith("other: ")) {
+          parsedServices.push("other");
+          customServiceText = service.replace("other: ", "");
+        } else {
+          parsedServices.push(service);
+        }
+      });
+      
+      setServicesOffered(parsedServices);
+      setCustomService(customServiceText);
       setSmsPhone(data.notification_phone);
       setNotificationEmail(data.notification_email);
       setBusinessDisplayName(data.business_name);
@@ -147,6 +170,7 @@ const DashboardSettings = () => {
       industry,
       serviceArea,
       servicesOffered,
+      customService,
     });
 
     if (!result.success) {
@@ -165,6 +189,14 @@ const DashboardSettings = () => {
       const cleanBusinessPhone = businessPhone.replace(/\D/g, '');
       const e164BusinessPhone = cleanBusinessPhone.startsWith('1') ? `+${cleanBusinessPhone}` : `+1${cleanBusinessPhone}`;
       
+      // Process services: if "other" is selected with custom text, store as "other: [custom text]"
+      const processedServices = servicesOffered.map(service => {
+        if (service === "other" && customService) {
+          return `other: ${customService}`;
+        }
+        return service;
+      });
+      
       const { error } = await supabase
         .from("businesses")
         .update({
@@ -173,7 +205,7 @@ const DashboardSettings = () => {
           business_phone: e164BusinessPhone,
           industry,
           service_area: serviceArea,
-          services_offered: servicesOffered,
+          services_offered: processedServices,
         })
         .eq("user_id", userId);
 
@@ -405,6 +437,19 @@ const DashboardSettings = () => {
                       </div>
                     ))}
                   </div>
+                  
+                  {servicesOffered.includes("other") && (
+                    <div className="space-y-2 mt-3">
+                      <Label htmlFor="customService">Please specify your service *</Label>
+                      <Input
+                        id="customService"
+                        placeholder="e.g., Pool Cleaning, Window Washing, etc."
+                        value={customService}
+                        onChange={(e) => setCustomService(e.target.value)}
+                        maxLength={200}
+                      />
+                    </div>
+                  )}
                 </div>
 
                 <Button onClick={handleSaveBusinessInfo} disabled={isSaving}>

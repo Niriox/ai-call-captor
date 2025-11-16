@@ -23,7 +23,13 @@ const step2Schema = z.object({
   industry: z.string().min(1, { message: "Please select an industry" }),
   serviceArea: z.string().trim().min(1, { message: "Service area is required" }).max(100),
   servicesOffered: z.array(z.string()).min(1, { message: "Select at least one service" }),
-});
+  customService: z.string().trim().max(200).optional(),
+}).refine((data) => {
+  if (data.servicesOffered.includes("other") && !data.customService) {
+    return false;
+  }
+  return true;
+}, { message: "Please specify your service", path: ["customService"] });
 
 const step3Schema = z.object({
   notificationPhone: z.string()
@@ -70,6 +76,7 @@ const Onboarding = () => {
   const [industry, setIndustry] = useState("");
   const [serviceArea, setServiceArea] = useState("");
   const [servicesOffered, setServicesOffered] = useState<string[]>([]);
+  const [customService, setCustomService] = useState("");
   
   // Step 3 data
   const [notificationPhone, setNotificationPhone] = useState("");
@@ -119,7 +126,7 @@ const Onboarding = () => {
   };
 
   const validateStep2 = () => {
-    const result = step2Schema.safeParse({ industry, serviceArea, servicesOffered });
+    const result = step2Schema.safeParse({ industry, serviceArea, servicesOffered, customService });
     if (!result.success) {
       const fieldErrors: Record<string, string> = {};
       result.error.errors.forEach((err) => {
@@ -181,6 +188,14 @@ const Onboarding = () => {
       const e164BusinessPhone = cleanBusinessPhone.startsWith('1') ? `+${cleanBusinessPhone}` : `+1${cleanBusinessPhone}`;
       const e164NotificationPhone = cleanNotificationPhone.startsWith('1') ? `+${cleanNotificationPhone}` : `+1${cleanNotificationPhone}`;
       
+      // Process services: if "other" is selected with custom text, store as "other: [custom text]"
+      const processedServices = servicesOffered.map(service => {
+        if (service === "other" && customService) {
+          return `other: ${customService}`;
+        }
+        return service;
+      });
+      
       const { error } = await supabase
         .from("businesses")
         .insert({
@@ -190,7 +205,7 @@ const Onboarding = () => {
           business_phone: e164BusinessPhone,
           industry,
           service_area: serviceArea,
-          services_offered: servicesOffered,
+          services_offered: processedServices,
           notification_phone: e164NotificationPhone,
           notification_email: notificationEmail,
           selected_plan: selectedPlan,
@@ -357,6 +372,22 @@ const Onboarding = () => {
                   </div>
                   {errors.servicesOffered && (
                     <p className="text-sm text-destructive">{errors.servicesOffered}</p>
+                  )}
+                  
+                  {servicesOffered.includes("other") && (
+                    <div className="space-y-2 mt-3 pl-6">
+                      <Label htmlFor="customService">Please specify your service *</Label>
+                      <Input
+                        id="customService"
+                        placeholder="e.g., Pool Cleaning, Window Washing, etc."
+                        value={customService}
+                        onChange={(e) => setCustomService(e.target.value)}
+                        maxLength={200}
+                      />
+                      {errors.customService && (
+                        <p className="text-sm text-destructive">{errors.customService}</p>
+                      )}
+                    </div>
                   )}
                 </div>
 
