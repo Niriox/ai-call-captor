@@ -18,10 +18,11 @@ const DashboardSetup = () => {
   const [loading, setLoading] = useState(true);
   const [isProvisioning, setIsProvisioning] = useState(false);
 
-  const triggerProvisioning = async () => {
+  const triggerProvisioning = async (forceNew?: boolean) => {
     setIsProvisioning(true);
     try {
-      const { data, error } = await supabase.functions.invoke('provision-services');
+      const invokeOptions: any = forceNew ? { body: { forceNew: true } } : {};
+      const { data, error } = await supabase.functions.invoke('provision-services', invokeOptions);
       
       if (error) {
         console.error('Error provisioning services:', error);
@@ -33,8 +34,10 @@ const DashboardSetup = () => {
       } else {
         console.log('Services provisioned successfully:', data);
         toast({
-          title: "Provisioning Started",
-          description: "Your phone number is being set up. This may take up to 60 seconds.",
+          title: forceNew ? "New Number Requested" : "Provisioning Started",
+          description: forceNew
+            ? "We're purchasing a brand new number and wiring webhooks. This may take up to 60 seconds."
+            : "Your phone number is being set up. This may take up to 60 seconds.",
         });
         
         // Refresh page after a delay to show the new number
@@ -271,7 +274,7 @@ const DashboardSetup = () => {
                     Refresh Now
                   </Button>
                   <Button 
-                    onClick={triggerProvisioning} 
+                    onClick={() => triggerProvisioning()} 
                     className="flex-1 h-11"
                     size="lg"
                     disabled={isProvisioning}
@@ -283,6 +286,22 @@ const DashboardSetup = () => {
                       </>
                     ) : (
                       'Start Setup Now'
+                    )}
+                  </Button>
+                  <Button
+                    onClick={() => triggerProvisioning(true)}
+                    variant="secondary"
+                    className="flex-1 h-11"
+                    size="lg"
+                    disabled={isProvisioning}
+                  >
+                    {isProvisioning ? (
+                      <>
+                        <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                        Requesting new number...
+                      </>
+                    ) : (
+                      'Get New Number'
                     )}
                   </Button>
                 </div>
