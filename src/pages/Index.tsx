@@ -13,19 +13,19 @@ const Index = () => {
     badge: "Solo operators",
     price: "$35",
     period: "month",
-    calls: "~15-20 calls captured/mo",
-    features: ["Capture every after-hours lead", "Instant SMS lead summaries", "Never miss emergency calls", "Professional AI greeting"],
-    additional: "$1.50/min after included minutes",
+    calls: "100 minutes/month (~33 calls)",
+    features: ["AI answers calls 24/7", "Collects customer information", "Instant SMS alerts with customer details (name, phone, service, address)", "Detailed email summaries with full transcripts", "Custom AI greeting", "Business hours settings", "Basic call logs"],
+    additional: "Overage: $0.50/min after 100 minutes",
     cta: "Start Free Trial",
     highlighted: false
   }, {
     name: "Professional",
-    badge: "Most Popular - Grow faster",
+    badge: "Most Popular",
     price: "$100",
     period: "month",
-    calls: "~50-60 calls captured/mo",
-    features: ["Everything in Starter", "Auto-book appointments 24/7", "Custom AI for your business", "Convert leads while on jobs"],
-    additional: "$1.00/min after included minutes",
+    calls: "300 minutes/month (~100 calls)",
+    features: ["Everything in Starter", "Call recordings & transcripts", "Advanced analytics dashboard", "Priority email support", "Daily call summaries"],
+    additional: "Overage: $0.40/min after 300 minutes",
     cta: "Start Free Trial",
     highlighted: true
   }, {
@@ -33,9 +33,9 @@ const Index = () => {
     badge: null,
     price: "$300",
     period: "month",
-    calls: "~200-250 calls captured/mo",
-    features: ["Everything in Professional", "Multiple locations/numbers", "Track ROI with analytics", "Integrate with your tools"],
-    additional: "$0.75/min after included minutes",
+    calls: "1000 minutes/month (~333 calls)",
+    features: ["Everything in Professional", "Multiple team members", "Custom service offerings", "Advanced call routing", "Dedicated support", "Custom notification preferences"],
+    additional: "Overage: $0.30/min after 1000 minutes",
     cta: "Start Free Trial",
     highlighted: false
   }, {
@@ -218,8 +218,11 @@ const Index = () => {
         <h2 className="text-3xl md:text-4xl font-bold text-center mb-4 text-foreground">
           Pay For Results, Not Missed Opportunities
         </h2>
-        <p className="text-xl text-muted-foreground text-center mb-12 max-w-2xl mx-auto">
+        <p className="text-xl text-muted-foreground text-center mb-6 max-w-2xl mx-auto">
           One missed call costs more than a month of service. Start capturing revenue in 24 hours.
+        </p>
+        <p className="text-2xl font-semibold text-center mb-12 max-w-3xl mx-auto text-foreground">
+          Never miss a customer again. AI answers, collects info, texts you the details - all in seconds.
         </p>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {pricingPlans.map(plan => <Card key={plan.name} className={`flex flex-col ${plan.highlighted ? 'border-primary border-2 shadow-elegant scale-105 lg:scale-110' : 'border-2'} transition-all hover:shadow-elegant`}>
@@ -254,6 +257,9 @@ const Index = () => {
               </CardFooter>
             </Card>)}
         </div>
+        <p className="text-sm text-muted-foreground text-center mt-12 max-w-4xl mx-auto">
+          All plans include: Dedicated phone number • 30-second setup • SMS & email notifications • No contracts • Cancel anytime
+        </p>
       </section>
 
       {/* FAQ Section */}
