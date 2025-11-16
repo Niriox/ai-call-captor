@@ -3,7 +3,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Badge } from "@/components/ui/badge";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { Phone, Bot, MessageSquare, Check, Menu } from "lucide-react";
+import { Phone, Bot, MessageSquare, Check, Menu, Smartphone } from "lucide-react";
 import heroImage from "@/assets/hero-image.jpg";
 import { useState } from "react";
 const Index = () => {
@@ -158,7 +158,20 @@ const Index = () => {
         <p className="text-xl text-muted-foreground text-center mb-12 max-w-2xl mx-auto">
           Stop competing on who answers fastest. Win on who captures every opportunity.
         </p>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          <Card className="text-center border-2 transition-all hover:shadow-elegant">
+            <CardHeader>
+              <div className="mx-auto w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mb-4">
+                <Smartphone className="w-8 h-8 text-primary" />
+              </div>
+              <CardTitle className="text-xl">Quick Setup (30 Seconds)</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="text-muted-foreground font-semibold mb-2">Dial one code. That's it.</p>
+              <p className="text-sm text-muted-foreground">No app download. No complicated settings. Works with any carrier.</p>
+            </CardContent>
+          </Card>
+
           <Card className="text-center border-2 transition-all hover:shadow-elegant">
             <CardHeader>
               <div className="mx-auto w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mb-4">
