@@ -45,9 +45,20 @@ serve(async (req) => {
 
     const twilioIncomingUrl = `${supabaseUrl}/functions/v1/twilio-incoming`;
 
+    // Optional flag to force purchasing a brand-new number
+    let forceNew = false;
+    try {
+      if (req.headers.get('content-type')?.includes('application/json')) {
+        const body = await req.json();
+        forceNew = !!body.forceNew;
+      }
+    } catch (_) {
+      // ignore body parse errors
+    }
+
     let phoneNumber: string | null = business.twilio_number;
 
-    if (phoneNumber) {
+    if (phoneNumber && !forceNew) {
       // Update existing number's webhook to twilio-incoming
       const listResp = await fetch(
         `https://api.twilio.com/2010-04-01/Accounts/${twilioAccountSid}/IncomingPhoneNumbers.json?PhoneNumber=${encodeURIComponent(phoneNumber)}`,
