@@ -73,9 +73,9 @@ serve(async (req) => {
         },
         body: new URLSearchParams({
           PhoneNumber: phoneNumber,
-          VoiceUrl: `${supabaseUrl}/functions/v1/twilio-webhook`,
+          VoiceUrl: `https://genujygrllrnlkawdjhk.supabase.co/functions/v1/twilio-webhook`,
           VoiceMethod: 'POST',
-          SmsUrl: `${supabaseUrl}/functions/v1/twilio-webhook`,
+          SmsUrl: `https://genujygrllrnlkawdjhk.supabase.co/functions/v1/twilio-webhook`,
           SmsMethod: 'POST',
         }),
       }
