@@ -143,12 +143,8 @@ const Index = () => {
                 <a href="/signup">Start Free 14-Day Trial</a>
               </Button>
               <p className="text-sm text-muted-foreground">
-                 Setup takes 30 seconds • No credit card required • Cancel anytime
+                Setup takes 30 seconds • No credit card required • Cancel anytime
               </p>
-              {/* ElevenLabs Voice AI Demo */}
-              <div className="mt-6" dangerouslySetInnerHTML={{ 
-                __html: '<elevenlabs-convai agent-id="agent_2701ka6exwf5fpsb6wqq9n2gtvxk"></elevenlabs-convai>' 
-              }} />
             </div>
           </div>
           <div className="relative">
