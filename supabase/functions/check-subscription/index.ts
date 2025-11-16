@@ -86,8 +86,8 @@ serve(async (req) => {
         stripe_customer_id: customerId,
         stripe_subscription_id: subscription.id,
         subscription_status: subscription.status,
-        trial_ends_at: subscription.status === "trialing" 
-          ? new Date(subscription.trial_end! * 1000).toISOString()
+        trial_ends_at: (subscription.status === "trialing" && subscription.trial_end) 
+          ? new Date(subscription.trial_end * 1000).toISOString()
           : null,
       })
       .eq("user_id", user.id);
