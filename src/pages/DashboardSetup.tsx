@@ -12,6 +12,7 @@ const DashboardSetup = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
   const [twilioNumber, setTwilioNumber] = useState<string | null>(null);
+  const [stripeCustomerId, setStripeCustomerId] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -24,7 +25,7 @@ const DashboardSetup = () => {
 
       const { data, error } = await supabase
         .from("businesses")
-        .select("twilio_number")
+        .select("twilio_number, stripe_customer_id")
         .eq("user_id", user.id)
         .maybeSingle();
 
@@ -32,11 +33,12 @@ const DashboardSetup = () => {
         console.error("Error fetching business:", error);
         toast({
           title: "Error",
-          description: "Failed to load your AI number",
+          description: "Failed to load your business data",
           variant: "destructive",
         });
       } else {
         setTwilioNumber(data?.twilio_number || null);
+        setStripeCustomerId(data?.stripe_customer_id || null);
       }
       setLoading(false);
     };
@@ -88,6 +90,91 @@ const DashboardSetup = () => {
     );
   }
 
+  // Payment gate if no stripe_customer_id
+  if (!stripeCustomerId) {
+    return (
+      <div className="min-h-screen bg-gradient-hero">
+        <div className="container mx-auto px-4 py-8">
+          <div className="max-w-2xl mx-auto">
+            <Button variant="ghost" onClick={() => navigate("/dashboard")} className="mb-6">
+              ← Back to Dashboard
+            </Button>
+
+            <Card className="border-primary/20">
+              <CardHeader className="text-center">
+                <CardTitle className="text-3xl">Add Payment Method to Activate</CardTitle>
+                <CardDescription className="text-lg mt-4">
+                  Your AI Voicemail number will be provisioned immediately after you add a payment method.
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-6">
+                <div className="space-y-2 text-muted-foreground">
+                  <p>• 14-day free trial - you won't be charged until day 15</p>
+                  <p>• Cancel anytime before trial ends</p>
+                  <p>• Your dedicated phone number will be created instantly</p>
+                </div>
+                
+                <Button 
+                  onClick={() => navigate("/dashboard/billing")} 
+                  className="w-full"
+                  size="lg"
+                >
+                  Add Payment Method
+                </Button>
+
+                <p className="text-center text-sm text-muted-foreground">
+                  Questions? Email <a href="mailto:support@aivoicemail.co" className="text-primary hover:underline">support@aivoicemail.co</a>
+                </p>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Provisioning message if payment added but no twilio_number yet
+  if (stripeCustomerId && !twilioNumber) {
+    return (
+      <div className="min-h-screen bg-gradient-hero">
+        <div className="container mx-auto px-4 py-8">
+          <div className="max-w-2xl mx-auto">
+            <Button variant="ghost" onClick={() => navigate("/dashboard")} className="mb-6">
+              ← Back to Dashboard
+            </Button>
+
+            <Card className="border-primary/20">
+              <CardHeader className="text-center">
+                <CardTitle className="text-3xl">Provisioning Your Number...</CardTitle>
+                <CardDescription className="text-lg mt-4">
+                  Your dedicated AI Voicemail number is being created. This usually takes less than a minute.
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-6">
+                <div className="flex justify-center">
+                  <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+                </div>
+                
+                <p className="text-center text-muted-foreground">
+                  Please refresh this page in 30 seconds.
+                </p>
+
+                <Button 
+                  onClick={() => window.location.reload()} 
+                  variant="outline"
+                  className="w-full"
+                >
+                  Refresh Now
+                </Button>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Full setup instructions when payment is added AND twilio_number exists
   return (
     <div className="min-h-screen bg-gradient-hero">
       <div className="container mx-auto px-4 py-8">
