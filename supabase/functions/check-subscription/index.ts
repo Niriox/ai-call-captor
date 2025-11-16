@@ -69,7 +69,9 @@ serve(async (req) => {
 
     const subscription = subscriptions.data[0];
     const isActive = subscription.status === "active" || subscription.status === "trialing";
-    const subscriptionEnd = new Date(subscription.current_period_end * 1000).toISOString();
+    const subscriptionEnd = subscription.current_period_end 
+      ? new Date(subscription.current_period_end * 1000).toISOString()
+      : null;
     const productId = subscription.items.data[0].price.product as string;
 
     logStep("Subscription found", { 
