@@ -28,7 +28,7 @@ const Signin = () => {
     // Check if user is already logged in
     supabase.auth.getSession().then(({ data: { session } }) => {
       if (session) {
-        navigate("/");
+        navigate("/dashboard");
       }
     });
   }, [navigate]);
@@ -76,8 +76,8 @@ const Signin = () => {
         description: "Signed in successfully",
       });
 
-      // Redirect to home
-      navigate("/");
+      // Redirect to dashboard
+      navigate("/dashboard");
     } catch (error) {
       toast({
         title: "An error occurred",
