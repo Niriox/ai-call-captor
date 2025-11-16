@@ -107,7 +107,7 @@ serve(async (req) => {
         throw new Error('No available phone numbers found');
       }
 
-      phoneNumber = searchData.available_phone_numbers[0].phone_number;
+      phoneNumber = searchData.available_phone_numbers[0].phone_number as string;
 
       // Purchase the phone number with correct webhook
       const purchaseResponse = await fetch(
