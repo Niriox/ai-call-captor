@@ -226,71 +226,88 @@ const Index = () => {
         
         <div className="max-w-4xl mx-auto">
           <div className="grid md:grid-cols-2 gap-8 items-center">
-            {/* Phone Mockup */}
+            {/* iPhone Mockup */}
             <div className="flex justify-center md:justify-end">
               <div className="relative">
-                {/* Phone Frame */}
-                <div className="w-[320px] h-[640px] bg-foreground rounded-[3rem] p-3 shadow-2xl border-8 border-foreground">
+                {/* iPhone Frame */}
+                <div className="w-[340px] h-[680px] bg-[#1c1c1e] rounded-[3.5rem] p-2 shadow-2xl">
                   {/* Screen */}
-                  <div className="w-full h-full bg-background rounded-[2.5rem] overflow-hidden">
+                  <div className="w-full h-full bg-white rounded-[3rem] overflow-hidden relative">
+                    {/* Notch */}
+                    <div className="absolute top-0 left-1/2 -translate-x-1/2 w-40 h-7 bg-[#1c1c1e] rounded-b-3xl z-10"></div>
+                    
                     {/* Status Bar */}
-                    <div className="bg-background px-6 py-3 flex justify-between items-center text-xs">
-                      <span className="font-semibold">9:41</span>
+                    <div className="absolute top-0 left-0 right-0 h-11 flex justify-between items-center px-8 pt-2 text-xs font-semibold z-0">
+                      <span>9:41</span>
                       <div className="flex gap-1 items-center">
-                        <div className="w-4 h-3 border border-current rounded-sm">
-                          <div className="w-2 h-2 bg-current m-0.5 rounded-sm"></div>
+                        <svg className="w-4 h-3" viewBox="0 0 16 12" fill="currentColor">
+                          <path d="M0 5h4v2H0V5zm6 0h4v2H6V5zm6 0h4v2h-4V5z"/>
+                        </svg>
+                        <svg className="w-4 h-3" viewBox="0 0 16 12" fill="currentColor">
+                          <path d="M1 3l7 6 7-6H1z"/>
+                        </svg>
+                        <svg className="w-5 h-4" viewBox="0 0 20 16" fill="currentColor">
+                          <rect x="1" y="1" width="16" height="12" rx="2" stroke="currentColor" fill="none"/>
+                          <rect x="18" y="5" width="1" height="4" fill="currentColor"/>
+                        </svg>
+                      </div>
+                    </div>
+                    
+                    {/* Messages Header */}
+                    <div className="absolute top-11 left-0 right-0 bg-[#f6f6f6] border-b border-gray-200 px-4 py-3 flex items-center justify-between">
+                      <div className="flex items-center gap-3 flex-1">
+                        <button className="text-[#007AFF] flex items-center gap-1 text-base">
+                          <span className="text-xl font-light">&lt;</span>
+                          <span>Messages</span>
+                        </button>
+                      </div>
+                      <div className="flex-1 text-center">
+                        <h1 className="font-semibold text-base">AI Voicemail</h1>
+                      </div>
+                      <div className="flex items-center gap-4 flex-1 justify-end">
+                        <Phone className="w-5 h-5 text-[#007AFF]" />
+                      </div>
+                    </div>
+                    
+                    {/* Messages Content */}
+                    <div className="absolute top-[88px] bottom-0 left-0 right-0 bg-white px-4 py-6 overflow-hidden">
+                      {/* Date Stamp */}
+                      <div className="text-center mb-4">
+                        <span className="text-xs text-gray-500">Today 9:41 AM</span>
+                      </div>
+                      
+                      {/* iMessage Bubble */}
+                      <div className="flex justify-start mb-2">
+                        <div className="max-w-[280px]">
+                          <div className="bg-[#007AFF] text-white rounded-3xl rounded-tl-sm px-4 py-3 shadow-sm">
+                            <div className="space-y-2 text-[15px] leading-relaxed">
+                              <p className="font-medium">🔔 New call from customer</p>
+                              <p className="font-semibold">Mike Johnson</p>
+                              <p>(555) 123-4567</p>
+                              <div className="border-t border-white/20 my-2 pt-2">
+                                <p><span className="font-medium">Service:</span> Water heater repair</p>
+                                <p><span className="font-medium">Address:</span> 123 Main St, Denver</p>
+                                <p><span className="font-medium">Urgency:</span> ASAP 🔴</p>
+                              </div>
+                              <div className="border-t border-white/20 my-2 pt-2">
+                                <p><span className="font-medium">Notes:</span> Water leaking, needs help today</p>
+                              </div>
+                            </div>
+                          </div>
+                          <div className="text-xs text-gray-500 mt-1 px-2">
+                            Read
+                          </div>
                         </div>
                       </div>
                     </div>
                     
-                    {/* Notification */}
-                    <div className="px-4 py-6">
-                      <div className="bg-card rounded-2xl shadow-elegant border border-border overflow-hidden animate-fade-up">
-                        {/* Notification Header */}
-                        <div className="bg-primary/10 px-4 py-3 border-b border-border flex items-center gap-2">
-                          <MessageSquare className="w-5 h-5 text-primary" />
-                          <span className="font-semibold text-sm text-foreground">New call from AI Voicemail</span>
-                        </div>
-                        
-                        {/* Notification Content */}
-                        <div className="p-4 space-y-3">
-                          <div className="flex items-start gap-2">
-                            <span className="font-semibold text-muted-foreground text-sm min-w-[80px]">Customer:</span>
-                            <span className="font-medium text-foreground text-sm">Mike Johnson</span>
-                          </div>
-                          <div className="flex items-start gap-2">
-                            <span className="font-semibold text-muted-foreground text-sm min-w-[80px]">Phone:</span>
-                            <span className="font-medium text-foreground text-sm">(555) 123-4567</span>
-                          </div>
-                          <div className="flex items-start gap-2">
-                            <span className="font-semibold text-muted-foreground text-sm min-w-[80px]">Service:</span>
-                            <span className="font-medium text-foreground text-sm">Water heater repair</span>
-                          </div>
-                          <div className="flex items-start gap-2">
-                            <span className="font-semibold text-muted-foreground text-sm min-w-[80px]">Address:</span>
-                            <span className="font-medium text-foreground text-sm">123 Main St, Denver</span>
-                          </div>
-                          <div className="flex items-start gap-2">
-                            <span className="font-semibold text-muted-foreground text-sm min-w-[80px]">Urgency:</span>
-                            <Badge className="bg-destructive text-destructive-foreground text-xs">ASAP</Badge>
-                          </div>
-                          <div className="flex items-start gap-2">
-                            <span className="font-semibold text-muted-foreground text-sm min-w-[80px]">Notes:</span>
-                            <span className="font-medium text-foreground text-sm">Water leaking, needs help today</span>
-                          </div>
-                        </div>
-                        
-                        {/* Timestamp */}
-                        <div className="px-4 py-2 bg-secondary/30 border-t border-border">
-                          <span className="text-xs text-muted-foreground">Just now</span>
-                        </div>
-                      </div>
-                    </div>
+                    {/* iPhone Home Indicator */}
+                    <div className="absolute bottom-2 left-1/2 -translate-x-1/2 w-32 h-1 bg-black rounded-full"></div>
                   </div>
                 </div>
                 
                 {/* Glow Effect */}
-                <div className="absolute -inset-4 bg-primary/20 blur-3xl -z-10 rounded-full"></div>
+                <div className="absolute -inset-4 bg-[#007AFF]/20 blur-3xl -z-10 rounded-full"></div>
               </div>
             </div>
             
@@ -298,7 +315,7 @@ const Index = () => {
             <div className="space-y-6">
               <div className="space-y-4">
                 <div className="inline-flex items-center gap-2 bg-primary/10 px-4 py-2 rounded-full">
-                  <MessageSquare className="w-5 h-5 text-primary" />
+                  <span className="text-2xl">⚡</span>
                   <span className="font-semibold text-primary">10 Seconds</span>
                 </div>
                 <h3 className="text-2xl md:text-3xl font-bold text-foreground">
